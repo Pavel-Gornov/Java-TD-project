@@ -26,11 +26,11 @@ public class GameMain extends ApplicationAdapter {
         planet = new Texture("planet.png");
         TEMP = new Texture("planet.png");
         batch = new SpriteBatch();
-        ScrHeight=Gdx.graphics.getHeight();
-        ScrWidth=Gdx.graphics.getWidth();
+        ScrHeight = Gdx.graphics.getHeight();
+        ScrWidth = Gdx.graphics.getWidth();
         batch.setProjectionMatrix(camera.combined);
-        planet_x = Gdx.graphics.getWidth()/2f;
-        planet_y = Gdx.graphics.getHeight()/2f;
+        planet_x = Gdx.graphics.getWidth() / 2f;
+        planet_y = Gdx.graphics.getHeight() / 2f;
         camera.update();
     }
 
@@ -42,7 +42,7 @@ public class GameMain extends ApplicationAdapter {
         batch.begin();
         batch.draw(planet, planet_x, planet_y);
         batch.end();
-        System.out.println("W: "+Gdx.graphics.getWidth()+" H: "+Gdx.graphics.getHeight());
+        System.out.println("W: " + Gdx.graphics.getWidth() + " H: " + Gdx.graphics.getHeight());
         camera.update();
     }
 //    @Override
