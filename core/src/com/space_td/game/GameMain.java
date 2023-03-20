@@ -17,12 +17,10 @@ public class GameMain extends ApplicationAdapter {
     public float ScrHeight;
     public float planet_x;
     public float planet_y;
-    OrthographicCamera camera = new OrthographicCamera();
-
-
+    public OrthographicCamera camera;
     @Override
     public void create() {
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         planet = new Texture("planet.png");
         TEMP = new Texture("planet.png");
         batch = new SpriteBatch();
@@ -31,6 +29,7 @@ public class GameMain extends ApplicationAdapter {
         batch.setProjectionMatrix(camera.combined);
         planet_x = Gdx.graphics.getWidth() / 2f;
         planet_y = Gdx.graphics.getHeight() / 2f;
+        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
     }
 
@@ -38,9 +37,10 @@ public class GameMain extends ApplicationAdapter {
     @Override
     public void render() {
         ScreenUtils.clear(0, 0, 0, 1);
+        batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(planet, planet_x, planet_y);
+        batch.draw(planet, camera.viewportWidth/2f, camera.viewportHeight/2f);
         batch.end();
         System.out.println("W: " + Gdx.graphics.getWidth() + " H: " + Gdx.graphics.getHeight());
         camera.update();
