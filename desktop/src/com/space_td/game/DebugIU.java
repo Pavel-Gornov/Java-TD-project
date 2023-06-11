@@ -2,6 +2,7 @@ package com.space_td.game;
 import javax.swing.*;
 
 public class DebugIU {
+    public static String data="nothing to show";
     public static void main(String[] args) {
 
 
@@ -34,7 +35,8 @@ class MyThread extends Thread {
 
         // запуск обновления текста каждые 100 миллисекунд
         Timer timer = new Timer(100, e -> {
-            label.setText("This text is constantly updating");
+            DebugIU.data=GameMain.debugData;
+            label.setText(DebugIU.data);
         });
         timer.start();
 
