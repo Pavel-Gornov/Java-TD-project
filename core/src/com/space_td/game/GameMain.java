@@ -7,9 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.util.ArrayList;
@@ -19,18 +17,17 @@ public class GameMain extends ApplicationAdapter {
     public static String debugData;
     private SpriteBatch batch;
     private Texture planet;
-    private Texture TEMP;
     public float ScrWidth;
     public float ScrHeight;
     public float planet_x;
     public float planet_y;
     public OrthographicCamera camera;
     DummyGameObject dg;
-    ArrayList<Star> stars = new ArrayList<Star>();
-    ArrayList<TextureRegion> starTextures = new ArrayList<TextureRegion>();
+    ArrayList<Star> stars = new ArrayList<>();
+    ArrayList<TextureRegion> starTextures = new ArrayList<>();
     int starsLimit;
     long windowSpace;
-    float starCountModifier=1f;
+    float starCountModifier = 1f;
     float screenBordersMedian;
 
     @Override
@@ -40,15 +37,14 @@ public class GameMain extends ApplicationAdapter {
         camera = new OrthographicCamera(ScrWidth, ScrHeight);
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         planet = new Texture("planet.png");
-        TEMP = new Texture("planet.png");
-        starTextures=Utils.splitRegion(new Texture("stars.png"),8, 8);
+        starTextures = Utils.splitRegion(new Texture("stars.png"), 8, 8);
         recalcStarCount();
         fixStarsArraySize();
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
         planet_x = ScrWidth / 2f;
         planet_y = ScrHeight / 2f;
-        dg = new DummyGameObject(new Vector2(ScrWidth / 2, ScrHeight / 2), 0, new Vector2(1, 1), new TextureRegion( new Texture("planet.png")), false, false);
+        dg = new DummyGameObject(new Vector2(ScrWidth / 2, ScrHeight / 2), 0, new Vector2(1, 1), new TextureRegion(new Texture("planet.png")), false, false);
         camera.update();
     }
 
@@ -63,17 +59,18 @@ public class GameMain extends ApplicationAdapter {
         for (int i = 0; i < stars.size(); i++) {
             if (stars.get(i).isDestroyed) stars.set(i, Star.makeStar(starTextures));
             stars.get(i).draw(batch);
-            debugData="Stars count: "+stars.size()+"\n";
+            debugData = "Stars count: " + stars.size() + "\n";
         }
         dg.draw(batch);
-        dg.position.x+=Gdx.graphics.getDeltaTime();
+        dg.position.x += Gdx.graphics.getDeltaTime();
 
         if (batch.isDrawing()) batch.end();
 
         camera.update();
-        data.FPS= (int) (1/Gdx.graphics.getDeltaTime());
-        debugData+= "\nFPS: "+String.valueOf(data.FPS);
+        data.FPS = (int) (1 / Gdx.graphics.getDeltaTime());
+        debugData += "\nFPS: " + String.valueOf(data.FPS);
     }
+
     @Override
     public void resize(int width, int height) {
         camera.viewportWidth = width;
@@ -92,21 +89,22 @@ public class GameMain extends ApplicationAdapter {
             stars.get(i).dispose();
         }
     }
-    public int recalcStarCount(){
-        windowSpace= (long) Gdx.graphics.getHeight() *Gdx.graphics.getWidth();
-        screenBordersMedian=(Gdx.graphics.getHeight()+Gdx.graphics.getWidth())/2;
-        starsLimit= (int) ((windowSpace/screenBordersMedian)*starCountModifier);
-        return starsLimit;
+
+    public void recalcStarCount() {
+        windowSpace = (long) Gdx.graphics.getHeight() * Gdx.graphics.getWidth();
+        screenBordersMedian = (Gdx.graphics.getHeight() + Gdx.graphics.getWidth()) >> 1;
+        starsLimit = (int) ((windowSpace / screenBordersMedian) * starCountModifier);
     }
-    public void fixStarsArraySize(){
-        if (stars.size()<starsLimit){
-            for (int i = 0; i < starsLimit-stars.size(); i++) {
+
+    public void fixStarsArraySize() {
+        if (stars.size() < starsLimit) {
+            for (int i = 0; i < starsLimit - stars.size(); i++) {
                 stars.add(Star.makeStar(starTextures));
             }
         }
-        if (stars.size()>starsLimit){
-            for (int i = starsLimit-1; i < stars.size()-1; i++) {
-                stars.get(i).lifetime=0;
+        if (stars.size() > starsLimit) {
+            for (int i = starsLimit - 1; i < stars.size() - 1; i++) {
+                stars.get(i).lifetime = 0;
             }
         }
     }
