@@ -3,6 +3,7 @@ package com.space_td.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import org.ietf.jgss.GSSContext;
@@ -21,7 +22,7 @@ public class Star extends GameObject {
     public float alphaChangePause;
 
     //TODO:сделать цветные звёзды.
-    public Star(Vector2 position, float rotation, Vector2 size, Vector2 scale, Vector2 originPoint, Texture texture, boolean flipX, boolean flipY,
+    public Star(Vector2 position, float rotation, Vector2 size, Vector2 scale, Vector2 originPoint, TextureRegion texture, boolean flipX, boolean flipY,
                 float alpha, float alphaMax, float alphaMin, float lifetime, float alphaChangePause, float alphaChangeSpeed, boolean alphaGoalDirection, float alphaGoal) {
         super(position, rotation, size, scale, originPoint, texture, flipX, flipY);
         this.alpha = alpha;
@@ -35,9 +36,9 @@ public class Star extends GameObject {
 
     }
 
-    public static Star makeStar(ArrayList<Texture> textures) {
+    public static Star makeStar(ArrayList<TextureRegion> textures) {
         float rScale = Utils.randFloat(0.7f, 1.3f);
-        Texture starTexture = textures.get(Utils.randInt(0, textures.size() - 1));
+        //Texture starTexture = textures.get(Utils.randInt(0, textures.size() - 1));
         float rMinAlpha = Utils.randFloat(0, 0.8f);
         float rMaxAplha = Utils.randFloat(rMinAlpha, 1f);
         float rAlpha = Utils.randFloat(rMinAlpha, rMaxAplha);
@@ -45,7 +46,7 @@ public class Star extends GameObject {
         boolean aDir = rAlpha < rGoal;
         float globalStarModifier=1;
         return new Star(
-                new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Utils.randFloat(0,Gdx.graphics.getHeight())), 0, new Vector2(8*globalStarModifier, 8*globalStarModifier), new Vector2(rScale, rScale), new Vector2(4*globalStarModifier, 4*globalStarModifier), starTexture, Utils.randBoolean(), Utils.randBoolean(),
+                new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Utils.randFloat(0,Gdx.graphics.getHeight())), 0, new Vector2(8*globalStarModifier, 8*globalStarModifier), new Vector2(rScale, rScale), new Vector2(4*globalStarModifier, 4*globalStarModifier), textures.get(Utils.randInt(0, textures.size() - 1)), Utils.randBoolean(), Utils.randBoolean(),
                 rAlpha, rMaxAplha, rMinAlpha, Utils.randFloat(7f, 60f), 0f, Utils.randFloat(0.7f, 1.7f), aDir, rGoal);
 
     }

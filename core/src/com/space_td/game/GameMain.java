@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -26,7 +27,7 @@ public class GameMain extends ApplicationAdapter {
     public OrthographicCamera camera;
     DummyGameObject dg;
     ArrayList<Star> stars = new ArrayList<Star>();
-    ArrayList<Texture> starTextures = new ArrayList<Texture>();
+    ArrayList<TextureRegion> starTextures = new ArrayList<TextureRegion>();
     int starsLimit;
     long windowSpace;
     float starCountModifier=1f;
@@ -40,14 +41,14 @@ public class GameMain extends ApplicationAdapter {
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         planet = new Texture("planet.png");
         TEMP = new Texture("planet.png");
-        starTextures=Utils.splitTexture(new Texture("stars.png"),8, 8);
+        starTextures=Utils.splitRegion(new Texture("stars.png"),8, 8);
         recalcStarCount();
         fixStarsArraySize();
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
         planet_x = ScrWidth / 2f;
         planet_y = ScrHeight / 2f;
-        dg = new DummyGameObject(new Vector2(ScrWidth / 2, ScrHeight / 2), 0, new Vector2(1, 1), new Texture("planet.png"), false, false);
+        dg = new DummyGameObject(new Vector2(ScrWidth / 2, ScrHeight / 2), 0, new Vector2(1, 1), new TextureRegion( new Texture("planet.png")), false, false);
         camera.update();
     }
 

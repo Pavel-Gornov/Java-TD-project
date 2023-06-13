@@ -19,6 +19,7 @@ public class Utils {
         data.prepare();
         Texture texture = new Texture(data);
         data.disposePixmap();
+
         return texture;
     }
 
@@ -29,6 +30,18 @@ public class Utils {
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
                 textures.add(Utils.getTextureFromRegion(new TextureRegion(texture, i * sizeX, j * sizeY, sizeX, sizeY)));
+            }
+        }
+        return textures;
+    }
+    public static ArrayList<TextureRegion> splitRegion(Texture texture, int sizeX, int sizeY) {
+        ArrayList<TextureRegion> textures = new ArrayList<TextureRegion>();
+        int rows = texture.getHeight() / sizeY;
+        int cols = texture.getWidth() / sizeX;
+        for (int i = 0; i < cols; i++) {
+            for (int j = 0; j < rows; j++) {
+                //textures.add(Utils.getTextureFromRegion(new TextureRegion(texture, i * sizeX, j * sizeY, sizeX, sizeY)));
+                textures.add(new TextureRegion(texture, i * sizeX, j * sizeY, sizeX, sizeY));
             }
         }
         return textures;
