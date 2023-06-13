@@ -67,8 +67,7 @@ public class GameMain extends ApplicationAdapter {
         if (batch.isDrawing()) batch.end();
 
         camera.update();
-        data.FPS = (int) (1 / Gdx.graphics.getDeltaTime());
-        debugData += "\nFPS: " + String.valueOf(data.FPS);
+        debugData += "\nFPS: " + (int) (1 / Gdx.graphics.getDeltaTime());
     }
 
     @Override

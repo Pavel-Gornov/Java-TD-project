@@ -1,5 +1,6 @@
 package com.space_td.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.space_td.game.GameMain;
@@ -10,7 +11,7 @@ public class DesktopLauncher {
 		DebugIU.runDbUI();
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
-		config.setTitle(data.window_name);
+		config.setTitle("Space TD");
 		new Lwjgl3Application(new GameMain(), config);
 
 

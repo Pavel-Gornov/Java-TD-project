@@ -40,7 +40,6 @@ public class Utils {
         int cols = texture.getWidth() / sizeX;
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
-                //textures.add(Utils.getTextureFromRegion(new TextureRegion(texture, i * sizeX, j * sizeY, sizeX, sizeY)));
                 textures.add(new TextureRegion(texture, i * sizeX, j * sizeY, sizeX, sizeY));
             }
         }
