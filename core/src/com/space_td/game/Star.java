@@ -37,7 +37,7 @@ public class Star extends GameObject {
     }
 
     public static Star makeStar(ArrayList<TextureRegion> textures) {
-        float rScale = Utils.randFloat(0.7f, 1.3f);
+        float rScale = Utils.randFloat(0.3f, 2.5f);
         //Texture starTexture = textures.get(Utils.randInt(0, textures.size() - 1));
         float rMinAlpha = Utils.randFloat(0, 0.8f);
         float rMaxAplha = Utils.randFloat(rMinAlpha, 1f);
@@ -46,8 +46,8 @@ public class Star extends GameObject {
         boolean aDir = rAlpha < rGoal;
         float globalStarModifier=1;
         return new Star(
-                new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Utils.randFloat(0,Gdx.graphics.getHeight())), 0, new Vector2(8*globalStarModifier, 8*globalStarModifier), new Vector2(rScale, rScale), new Vector2(4*globalStarModifier, 4*globalStarModifier), textures.get(Utils.randInt(0, textures.size() - 1)), Utils.randBoolean(), Utils.randBoolean(),
-                rAlpha, rMaxAplha, rMinAlpha, Utils.randFloat(7f, 60f), 0f, Utils.randFloat(0.7f, 1.7f), aDir, rGoal);
+                new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Utils.randFloat(0,Gdx.graphics.getHeight())), Utils.randFloat(0, 360), new Vector2(8*globalStarModifier, 8*globalStarModifier), new Vector2(rScale, rScale), new Vector2(4*globalStarModifier, 4*globalStarModifier), textures.get(Utils.randInt(0, textures.size() - 1)), Utils.randBoolean(), Utils.randBoolean(),
+                rAlpha, rMaxAplha, rMinAlpha, Utils.randFloat(7f, 60f), 0f, Utils.randFloat(0.3f, 2.5f), aDir, rGoal);
 
     }
 
