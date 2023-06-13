@@ -7,7 +7,7 @@ import com.space_td.game.GameMain;
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		DebugIU.runDbUI();
+//		DebugIU.runDbUI();
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle(data.window_name);
