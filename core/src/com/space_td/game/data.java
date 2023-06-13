@@ -13,6 +13,7 @@ public class data {
     public static String build_add="cringe";
     //имя приложухи
     public static String App_name="Space TD";
+    public static int FPS=1;
     //собираем в 1...
     public static String window_name=App_name+" v"+v_release+"."+v_patch+"."+v_subpatch+"-"+build_type+": "+build_add+"";
 }
