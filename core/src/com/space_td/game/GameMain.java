@@ -70,6 +70,7 @@ public class GameMain extends ApplicationAdapter {
         planet_x = ScrWidth / 2f;
         planet_y = ScrHeight / 2f;
         dg = new DummyGameObject(new Vector2(ScrWidth / 2, ScrHeight / 2), 0, new Vector2(1, 1), new TextureRegion(new Texture("planet.png")), false, false);
+        dg.scale.set(new Vector2(4, 4));
         camera.update();
     }
     protected void load_textures(){
@@ -86,6 +87,7 @@ public class GameMain extends ApplicationAdapter {
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        dg.rotation += Gdx.graphics.getDeltaTime() * 2f;
         batch.begin();
         for (int i = 0; i < nebulas.size(); i++) {
             nebulas.get(i).draw(batch);

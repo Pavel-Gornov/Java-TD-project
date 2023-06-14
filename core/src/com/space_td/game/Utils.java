@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Utils {
+    private static final Random random = new Random();
 
     public static Vector2 calcCenter(float sizeX, float sizeY) {
         return new Vector2(sizeX / 2f, sizeY / 2f);
@@ -57,19 +58,16 @@ public class Utils {
         }
         if (a == b)
             return a;
-        Random random = new Random();
         return (random.nextFloat() * (b - a)) + a;
     }
 
     public static int randInt(int a, int b) {
-        Random random = new Random();
         int difference = b - a;
         int randomOffset = random.nextInt(difference + 1);
         return a + randomOffset;
     }
 
     public static boolean randBoolean() {
-        Random random = new Random();
         return random.nextBoolean();
     }
 
