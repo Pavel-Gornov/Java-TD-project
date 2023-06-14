@@ -39,7 +39,7 @@ public class Star extends GameObject {
     public static Star makeStar(ArrayList<TextureRegion> textures) {
         float rScale = Utils.randFloat(0.3f, 2.5f);
         float rMinAlpha = Utils.randFloat(0, 0.8f);
-        float rMaxAplha = Utils.randFloat(rMinAlpha, 1f);
+        float rMaxAplha = Utils.randFloat(rMinAlpha, 0.8f);
         float rAlpha = Utils.randFloat(rMinAlpha, rMaxAplha);
         float rGoal = Utils.randFloat(rMinAlpha, rMaxAplha);
         boolean aDir = rAlpha < rGoal;

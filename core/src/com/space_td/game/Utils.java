@@ -1,5 +1,7 @@
 package com.space_td.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -68,4 +70,54 @@ public class Utils {
         Random random = new Random();
         return random.nextBoolean();
     }
+    public static float getRotation(Vector2 point, Vector2 position) {
+        // Находим вектор от объекта до точки point
+        Vector2 targetDirection = point.cpy().sub(position);
+
+        // Находим угол между вектором от объекта до точки и осью x
+        float angle = (float) Math.atan2(targetDirection.y, targetDirection.x);
+
+        // Приводим угол к градусам
+        angle = (float) Math.toDegrees(angle);
+
+        return angle;
+    }
+    public static Color getGradientColor(Vector2 topLeftPos, Color topLeftColor, Vector2 bottomRightPos, Color bottomRightColor, Vector2 point) {
+        // Получаем ширину и высоту экрана
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
+
+        // Рассчитываем коэффициенты для перевода координат из пикселей в диапазон [0, 1]
+        float xFactor = 1f / screenWidth;
+        float yFactor = 1f / screenHeight;
+
+        // Координаты цветовых точек в диапазоне [0, 1]
+        float x1 = topLeftPos.x * xFactor;
+        float y1 = (screenHeight - topLeftPos.y) * yFactor;
+        float x2 = bottomRightPos.x * xFactor;
+        float y2 = (screenHeight - bottomRightPos.y) * yFactor;
+
+        // Создаем два цвета-вершины градиента
+        Color color1 = new Color(topLeftColor);
+        Color color2 = new Color(bottomRightColor);
+
+        // Рассчитываем длину вектора градиента
+        float gradientLength = new Vector2(x2 - x1, y2 - y1).len();
+
+        // Рассчитываем расстояние от точки до начала и конца градиента
+        float distanceFromStart = new Vector2(point.x * xFactor - x1, (screenHeight - point.y) * yFactor - y1).len();
+        float distanceFromEnd = new Vector2(point.x * xFactor - x2, (screenHeight - point.y) * yFactor - y2).len();
+
+        // Рассчитываем позицию точки на градиенте
+        float positionOnGradient = 1f - (distanceFromStart / gradientLength);
+
+        // Создаем новый цвет с учетом позиции на градиенте
+        Color color = new Color();
+        color.set(color1);
+        color.lerp(color2, positionOnGradient);
+
+        return color;
+    }
+
+
 }

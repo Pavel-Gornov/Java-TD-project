@@ -91,4 +91,15 @@ public abstract class GameObject implements Disposable {
     @Override
     public void dispose() {
     }
+
+    public void moveForward(float dist) {
+
+        float angleRad = (float) Math.toRadians(this.rotation);
+
+
+        float x = this.position.x + dist * (float) Math.cos(angleRad);
+        float y = this.position.y + dist * (float) Math.sin(angleRad);
+
+        this.position.set(x, y);
+    }
 }
