@@ -36,6 +36,7 @@ public class Utils {
         }
         return textures;
     }
+
     public static ArrayList<TextureRegion> splitRegion(Texture texture, int sizeX, int sizeY) {
         ArrayList<TextureRegion> textures = new ArrayList<TextureRegion>();
         int rows = texture.getHeight() / sizeY;
@@ -66,11 +67,13 @@ public class Utils {
         int randomOffset = random.nextInt(difference + 1);
         return a + randomOffset;
     }
-    public static boolean randBoolean(){
+
+    public static boolean randBoolean() {
         Random random = new Random();
         return random.nextBoolean();
     }
-    public static float getRotation(Vector2 point, Vector2 position) {
+
+    public static float getAngle(Vector2 point, Vector2 position) {
         // Находим вектор от объекта до точки point
         Vector2 targetDirection = point.cpy().sub(position);
 
@@ -82,6 +85,7 @@ public class Utils {
 
         return angle;
     }
+
     public static Color getGradientColor(Vector2 topLeftPos, Color topLeftColor, Vector2 bottomRightPos, Color bottomRightColor, Vector2 point) {
         // Получаем ширину и высоту экрана
         int screenWidth = Gdx.graphics.getWidth();

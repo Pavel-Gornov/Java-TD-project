@@ -18,6 +18,9 @@ public class GameMain extends ApplicationAdapter {
     public static String debugData;
     private SpriteBatch batch;
     private Texture planet;
+    private ArrayList<TextureRegion> starTextures;
+    private ArrayList<TextureRegion> enemyTextures;
+    private ArrayList<TextureRegion> nebulaTextures;
     public float ScrWidth;
     public float ScrHeight;
     public float planet_x;
@@ -25,7 +28,6 @@ public class GameMain extends ApplicationAdapter {
     public OrthographicCamera camera;
     DummyGameObject dg;
     ArrayList<Star> stars = new ArrayList<>();
-    ArrayList<TextureRegion> starTextures = new ArrayList<>();
     ArrayList<Enemy> enemies = new ArrayList<>();
     ArrayList<Nebula> nebulas = new ArrayList<>();
     int starsLimit;
@@ -43,18 +45,13 @@ public class GameMain extends ApplicationAdapter {
         ScrWidth = Gdx.graphics.getWidth();
         camera = new OrthographicCamera(ScrWidth, ScrHeight);
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
-        planet = new Texture("planet.png");
-        starTextures = Utils.splitRegion(new Texture("stars.png"), 8, 8);
+        load_textures();
+
         recalcStarCount();
         fixStarsArraySize();
         recalcNebulaCount();
         fixNebulaArraySize();
         ArrayList<Vector2> points = new ArrayList<>();
-//        points.add(new Vector2(100, 100));
-//        points.add(new Vector2(50, 50));
-//        points.add(new Vector2(200, 128));
-//        points.add(new Vector2(-1, 10));
-
         for (int j = 0; j < 10; j++) {
 
             points.add(new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Utils.randFloat(0, Gdx.graphics.getHeight())));
@@ -65,19 +62,21 @@ public class GameMain extends ApplicationAdapter {
                 }
                 points.add(vec);
             }
-            enemies.add(new Enemy(new Vector2(10, 10), 0, new Vector2(2, 2), data.enemyTextures.get(0), false, false, 1, 1, 1, 50, 1, Enemy.EnemyClasses.BASIC, new ArrayList<>(points)));
+            enemies.add(new Enemy(new Vector2(10, 10), 0, new Vector2(2, 2), enemyTextures.get(0), false, false, 1, 1, 1, 50, 1, Enemy.EnemyTypes.BASIC, new ArrayList<>(points)));
             points.clear();
         }
-        //        enemies.get(0).addPoint(new Vector2(100, 100));
-//        enemies.get(0).addPoint(new Vector2(50, 50));
-//        enemies.get(0).addPoint(new Vector2(200, 128));
-//        enemies.get(0).addPoint(new Vector2(-1, 10));
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
         planet_x = ScrWidth / 2f;
         planet_y = ScrHeight / 2f;
         dg = new DummyGameObject(new Vector2(ScrWidth / 2, ScrHeight / 2), 0, new Vector2(1, 1), new TextureRegion(new Texture("planet.png")), false, false);
         camera.update();
+    }
+    protected void load_textures(){
+        planet = new Texture("planet.png");
+        enemyTextures = Utils.splitRegion(new Texture("enemies.png"), 16, 16);
+        starTextures = Utils.splitRegion(new Texture("stars.png"), 8, 8);
+        nebulaTextures = Utils.splitRegion(new Texture("nebulas_white.png"), 64, 64);
     }
 
 
@@ -100,8 +99,6 @@ public class GameMain extends ApplicationAdapter {
             enemies.get(i).draw(batch);
         }
         dg.draw(batch);
-        dg.position.x += Gdx.graphics.getDeltaTime();
-
         if (batch.isDrawing()) batch.end();
 
         camera.update();
@@ -159,7 +156,7 @@ public class GameMain extends ApplicationAdapter {
         Vector2 bottomRight = new Vector2(camera.position.x + camera.viewportWidth / 2, camera.position.y - camera.viewportHeight / 2);
         if (nebulas.size() < nebulaLimit) {
             for (int i = 0; i < nebulaLimit - nebulas.size(); i++) {
-                nebulas.add(Nebula.makeNebula(topLeft, bottomRight, gradientColor1, gradientColor2));
+                nebulas.add(Nebula.makeNebula(topLeft, bottomRight, gradientColor1, gradientColor2, nebulaTextures.get(Utils.randInt(0, nebulaTextures.size() - 1))));
             }
         }
         if (nebulas.size() > nebulaLimit) {
