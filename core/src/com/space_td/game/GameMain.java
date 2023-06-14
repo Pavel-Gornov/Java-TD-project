@@ -7,9 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.util.ArrayList;
@@ -19,15 +17,14 @@ public class GameMain extends ApplicationAdapter {
     public static String debugData;
     private SpriteBatch batch;
     private Texture planet;
-    private Texture TEMP;
     public float ScrWidth;
     public float ScrHeight;
     public float planet_x;
     public float planet_y;
     public OrthographicCamera camera;
     DummyGameObject dg;
-    ArrayList<Star> stars = new ArrayList<Star>();
-    ArrayList<TextureRegion> starTextures = new ArrayList<TextureRegion>();
+    ArrayList<Star> stars = new ArrayList<>();
+    ArrayList<TextureRegion> starTextures = new ArrayList<>();
     int starsLimit;
     long windowSpace;
     float starCountModifier = 1f;
@@ -40,9 +37,8 @@ public class GameMain extends ApplicationAdapter {
         camera = new OrthographicCamera(ScrWidth, ScrHeight);
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         planet = new Texture("planet.png");
-        TEMP = new Texture("planet.png");
         starTextures = Utils.splitRegion(new Texture("stars.png"), 8, 8);
-        starsLimit=recalcStarCount();
+        recalcStarCount();
         fixStarsArraySize();
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
@@ -71,8 +67,7 @@ public class GameMain extends ApplicationAdapter {
         if (batch.isDrawing()) batch.end();
 
         camera.update();
-        data.FPS = (int) (1 / Gdx.graphics.getDeltaTime());
-        debugData += "\nFPS: " + String.valueOf(data.FPS);
+        debugData += "\nFPS: " + (int) (1 / Gdx.graphics.getDeltaTime());
     }
 
     @Override
@@ -80,7 +75,7 @@ public class GameMain extends ApplicationAdapter {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
         camera.update();
-        starsLimit=recalcStarCount();
+        recalcStarCount();
         fixStarsArraySize();
     }
 
@@ -94,11 +89,10 @@ public class GameMain extends ApplicationAdapter {
         }
     }
 
-    public int recalcStarCount() {
+    public void recalcStarCount() {
         windowSpace = (long) Gdx.graphics.getHeight() * Gdx.graphics.getWidth();
-        screenBordersMedian = (Gdx.graphics.getHeight() + Gdx.graphics.getWidth()) / 2;
+        screenBordersMedian = (Gdx.graphics.getHeight() + Gdx.graphics.getWidth()) >> 1;
         starsLimit = (int) ((windowSpace / screenBordersMedian) * starCountModifier);
-        return starsLimit;
     }
 
     public void fixStarsArraySize() {

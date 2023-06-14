@@ -7,14 +7,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
-//игровые объекты
+
 public abstract class GameObject implements Disposable {
-    public Vector2 position; //положение
-    public float rotation; //вращение ПРОТИВ часовой стрелки
-    public Vector2 size; //размеры в пикселях
-    public Vector2 scale; //просто на что домножаются размеры
-    public Vector2 originPoint; //то обо что вращается
-    public TextureRegion texture; //текстура
+    public Vector2 position;
+    public float rotation;
+    public Vector2 size;
+    public Vector2 scale;
+    public Vector2 originPoint;
+    public TextureRegion texture;
     public Animation<Texture> animation;
     boolean flipX;
     boolean flipY;
@@ -72,9 +72,6 @@ public abstract class GameObject implements Disposable {
         } else {
             if (!batch.isDrawing())
                 batch.begin();
-
-//            TextureRegion tr = new TextureRegion(this.texture, 0, 0, this.texture.getWidth(), this.texture.getHeight());
-//            batch.draw(this.texture, this.position.x, this.position.y, this.originPoint.x, this.originPoint.y, this.size.x, this.size.y, this.scale.x, this.scale.y, this.rotation, 0, 0, this.texture.getWidth(), this.texture.getHeight(), this.flipX, this.flipY);
             if (this.flipX & this.scale.x > 0)
                 this.scale.x *= -1;
 
@@ -93,9 +90,5 @@ public abstract class GameObject implements Disposable {
 
     @Override
     public void dispose() {
-//        this.shapeRenderer.dispose();
-//        this.texture.dispose();
-//        this.texture.dispose();
-
     }
 }
