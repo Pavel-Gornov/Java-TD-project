@@ -131,15 +131,19 @@ public class Utils {
     }
 
     public static <T extends GameObject, T2 extends GameObject> T2 checkForCollision(T obj, ArrayList<T2> objects) {
-
+        System.out.println("Collision check called by " + obj.id);
         if (obj.collider == null || objects.size() == 0) {
+            System.out.println(obj.collider == null ? "No collider!" : "No objects to check in " + objects.getClass().getName());
             return null;
         }
+
         for (int i = 0; i < objects.size(); i++) {
             if (obj.collider.overlaps(objects.get(i).collider)) {
+                System.out.println("Collision with " + objects.get(i).id);
                 return objects.get(i);
             }
         }
+        System.out.println("No collisions with objects from " + objects.getClass().getName());
         return null;
     }
 

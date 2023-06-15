@@ -21,6 +21,7 @@ public abstract class GameObject implements Disposable {
     boolean flipY;
     boolean showColliders = false;
     Rectangle collider;
+    public String id;
 
     public GameObject(Vector2 position, float rotation, Vector2 size, Vector2 scale, Vector2 originPoint, TextureRegion texture, boolean flipX, boolean flipY) {
         this.position = position;
@@ -31,6 +32,7 @@ public abstract class GameObject implements Disposable {
         this.texture = texture;
         this.flipX = flipX;
         this.flipY = flipY;
+        this.id = this.getClass().getName() + Utils.randInt(0, 10000)+"";
     }
 
     public GameObject(Vector2 position, float rotation, Vector2 size, Vector2 scale, TextureRegion texture, boolean flipX, boolean flipY) {
@@ -42,6 +44,7 @@ public abstract class GameObject implements Disposable {
         this.texture = texture;
         this.flipX = flipX;
         this.flipY = flipY;
+        this.id = this.getClass().getName() + Utils.randInt(0, 10000)+"";
     }
 
     public GameObject(Vector2 position, float rotation, Vector2 scale, TextureRegion texture, boolean flipX, boolean flipY) {
@@ -53,6 +56,7 @@ public abstract class GameObject implements Disposable {
         this.texture = texture;
         this.flipX = flipX;
         this.flipY = flipY;
+        this.id = this.getClass().getName() + Utils.randInt(0, 10000)+"";
     }
 
     public GameObject(Vector2 position, float rotation, TextureRegion texture, Vector2 scale, Vector2 originPoint, boolean flipX, boolean flipY) {
@@ -64,6 +68,7 @@ public abstract class GameObject implements Disposable {
         this.texture = texture;
         this.flipX = flipX;
         this.flipY = flipY;
+        this.id = this.getClass().getName() + Utils.randInt(0, 10000)+"";
     }
 
     public abstract void update(float delta);
