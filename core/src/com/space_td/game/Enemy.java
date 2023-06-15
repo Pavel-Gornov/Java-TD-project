@@ -49,8 +49,8 @@ public class Enemy extends GameObject {
         this.colliderSizes.x = this.size.x * this.colliderSizeModifier.x * this.scale.x;
         this.colliderSizes.y = this.size.y * this.colliderSizeModifier.y * this.scale.y;
 
-        this.collider = new Rectangle(position.x - colliderSizes.x / 2,
-                position.y - colliderSizes.y / 2,
+        this.collider = new Rectangle(originPoint.x,
+                originPoint.y,
                 colliderSizes.x, colliderSizes.y);
         try {
             estimatedMooveTime = position.dst(points.get(0));
