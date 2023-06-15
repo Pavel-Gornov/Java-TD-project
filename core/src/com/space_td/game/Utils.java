@@ -59,7 +59,7 @@ public class Utils {
         if (a == b)
             return a;
         float diff = b - a;
-        return (float) (Math.random()*diff)+a;
+        return (float) (Math.random() * diff) + a;
 
 //        return (random.nextFloat() * (b - a)) + a;
     }
@@ -69,7 +69,7 @@ public class Utils {
 //        int randomOffset = random.nextInt(difference + 1);
 //        return a + randomOffset;
         int diff = b - a;
-        return (int) (Math.floor(Math.random()*(diff+1))+a);
+        return (int) (Math.floor(Math.random() * (diff + 1)) + a);
     }
 
     public static boolean randBoolean() {
@@ -124,6 +124,23 @@ public class Utils {
         color.lerp(color2, positionOnGradient);
 
         return color;
+    }
+
+    public static float median(float a, float b) {
+        return (a + b) / 2;
+    }
+
+    public static <T extends GameObject, T2 extends GameObject> T2 checkForCollision(T obj, ArrayList<T2> objects) {
+
+        if (obj.collider == null || objects.size() == 0) {
+            return null;
+        }
+        for (int i = 0; i < objects.size(); i++) {
+            if (obj.collider.overlaps(objects.get(i).collider)) {
+                return objects.get(i);
+            }
+        }
+        return null;
     }
 
 

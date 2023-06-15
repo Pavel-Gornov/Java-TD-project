@@ -11,6 +11,7 @@ import org.ietf.jgss.GSSContext;
 import java.util.ArrayList;
 
 public class Star extends GameObject {
+    //TODO: сделать цветные звёзды
     public float alpha;
     public float alphaMax;
     public float alphaMin;

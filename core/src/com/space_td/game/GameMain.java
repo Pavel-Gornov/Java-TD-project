@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -20,14 +21,15 @@ import java.util.ArrayList;
 public class GameMain extends ApplicationAdapter {
     public static String debugData;
     private SpriteBatch batch;
-    private Texture planet;
+    private Planet planet;
+    public TextureRegion planetTexture;
+    public Vector2 planetPos;
+    public Vector2 planetScale;
     private ArrayList<TextureRegion> starTextures;
     private ArrayList<TextureRegion> enemyTextures;
     private ArrayList<TextureRegion> nebulaTextures;
     public float ScrWidth;
     public float ScrHeight;
-    public float planet_x;
-    public float planet_y;
     public OrthographicCamera camera;
     DummyGameObject dg;
     ArrayList<Star> stars = new ArrayList<>();
@@ -40,20 +42,27 @@ public class GameMain extends ApplicationAdapter {
     float nebulaCountModifier = 1f;
     float screenBordersMedian;
     public Color gradientColor1 = new Color(0.01f, 0.9f, 0.8f, 0.7f);
-    public Color gradientColor2 = new Color(1, 0, 0.83f,0.7f);
+    public Color gradientColor2 = new Color(1, 0, 0.83f, 0.7f);
+    public ShapeRenderer shapeRenderer;
 
     @Override
     public void create() {
         ScrHeight = Gdx.graphics.getHeight();
         ScrWidth = Gdx.graphics.getWidth();
+
         camera = new OrthographicCamera(ScrWidth, ScrHeight);
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
+
         load_textures();
+
+        shapeRenderer = new ShapeRenderer();
+        shapeRenderer.setAutoShapeType(true);
 
         recalcStarCount();
         fixStarsArraySize();
         recalcNebulaCount();
         fixNebulaArraySize();
+
         ArrayList<Vector2> points = new ArrayList<>();
         for (int j = 0; j < 10; j++) {
 
@@ -65,19 +74,24 @@ public class GameMain extends ApplicationAdapter {
                 }
                 points.add(vec);
             }
-            enemies.add(new Enemy(new Vector2(10, 10), 0, new Vector2(2, 2), enemyTextures.get(0), false, false, 1, 1, 1, 50, 1, Enemy.EnemyTypes.BASIC, new ArrayList<>(points)));
+            enemies.add(new Enemy(new Vector2(10, 10), 0, new Vector2(2, 2), enemyTextures.get(0), false, false, 1, 1, 1, 50, 1, Enemy.EnemyTypes.BASIC, new ArrayList<>(points), new Vector2(1, 1)));
             points.clear();
         }
+
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
-        planet_x = ScrWidth / 2f;
-        planet_y = ScrHeight / 2f;
-        dg = new DummyGameObject(new Vector2(ScrWidth / 2, ScrHeight / 2), 0, new Vector2(1, 1), new TextureRegion(new Texture("planet.png")), false, false);
-        dg.scale.set(new Vector2(4, 4));
+
+//        dg = new DummyGameObject(new Vector2(ScrWidth / 2, ScrHeight / 2), 0, new Vector2(1, 1), new TextureRegion(new Texture("planet.png")), false, false);
+//        dg.scale.set(new Vector2(4, 4));
+        planetScale = new Vector2(3, 3);
+        planetPos = new Vector2(ScrWidth / 2, ScrHeight / 2);
+        planet = new Planet(planetPos, 0, planetScale, planetTexture, false, false, 10000, 0);
+
         camera.update();
     }
-    protected void load_textures(){
-        planet = new Texture("planet.png");
+
+    protected void load_textures() {
+        planetTexture = new TextureRegion(new Texture("planet.png"));
         enemyTextures = Utils.splitRegion(new Texture("enemies.png"), 16, 16);
         starTextures = Utils.splitRegion(new Texture("stars.png"), 8, 8);
         nebulaTextures = Utils.splitRegion(new Texture("nebulas_white.png"), 64, 64);
@@ -92,9 +106,11 @@ public class GameMain extends ApplicationAdapter {
         Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         camera.unproject(mousePos);
         Vector2 worldMousePos = new Vector2(mousePos.x, mousePos.y);
-        System.out.println("Mouse position: "+mousePos.x+" "+mousePos.y);
-        dg.rotation += Gdx.graphics.getDeltaTime() * 2f;
+//        System.out.println("Mouse position: " + mousePos.x + " " + mousePos.y);
+//        dg.rotation += Gdx.graphics.getDeltaTime() * 2f;
         batch.begin();
+        shapeRenderer.begin();
+
         for (int i = 0; i < nebulas.size(); i++) {
             nebulas.get(i).draw(batch);
         }
@@ -103,12 +119,20 @@ public class GameMain extends ApplicationAdapter {
             stars.get(i).draw(batch);
             debugData = "Stars count: " + stars.size() + "\n";
         }
+        planet.draw(batch, enemies);
+        shapeRenderer.circle(planet.position.x, planet.position.y, planet.collider.radius);
         for (int i = 0; i < enemies.size(); i++) {
-            enemies.get(i).draw(batch);
-        }
-        dg.draw(batch);
-        if (batch.isDrawing()) batch.end();
 
+            enemies.get(i).draw(batch);
+            if (enemies.get(i).hp <= 0) {
+                enemies.remove(i);
+            }
+//            if (enemies.get(i).showColliders)
+                enemies.get(i).renderColliders(shapeRenderer);
+        }
+//        dg.draw(batch);
+        if (batch.isDrawing()) batch.end();
+        if (shapeRenderer.isDrawing()) shapeRenderer.end();
         camera.update();
         debugData += "\nFPS: " + (int) (1 / Gdx.graphics.getDeltaTime());
     }
@@ -122,6 +146,7 @@ public class GameMain extends ApplicationAdapter {
         fixStarsArraySize();
         recalcNebulaCount();
         fixNebulaArraySize();
+        planetPos = new Vector2(ScrWidth / 2, ScrHeight / 2);
     }
 
     @Override
@@ -132,6 +157,7 @@ public class GameMain extends ApplicationAdapter {
         for (int i = 0; i < stars.size(); i++) {
             stars.get(i).dispose();
         }
+        shapeRenderer.dispose();
     }
 
     public void recalcStarCount() {
@@ -168,7 +194,7 @@ public class GameMain extends ApplicationAdapter {
             }
         }
         if (nebulas.size() > nebulaLimit) {
-            while(nebulas.size()>nebulaLimit) {
+            while (nebulas.size() > nebulaLimit) {
                 nebulas.remove(0);
             }
         }
