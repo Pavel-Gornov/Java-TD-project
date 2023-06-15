@@ -2,6 +2,8 @@ package com.space_td.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -9,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.util.ArrayList;
@@ -86,7 +89,10 @@ public class GameMain extends ApplicationAdapter {
         ScreenUtils.clear(0, 0, 0, 1);
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        camera.unproject(mousePos);
+        Vector2 worldMousePos = new Vector2(mousePos.x, mousePos.y);
+        System.out.println("Mouse position: "+mousePos.x+" "+mousePos.y);
         dg.rotation += Gdx.graphics.getDeltaTime() * 2f;
         batch.begin();
         for (int i = 0; i < nebulas.size(); i++) {
@@ -167,4 +173,7 @@ public class GameMain extends ApplicationAdapter {
             }
         }
     }
+//    public static Vector2 randScreenPoint(Camera camera){
+//
+//    }
 }

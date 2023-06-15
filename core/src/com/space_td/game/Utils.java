@@ -58,17 +58,22 @@ public class Utils {
         }
         if (a == b)
             return a;
-        return (random.nextFloat() * (b - a)) + a;
+        float diff = b - a;
+        return (float) (Math.random()*diff)+a;
+
+//        return (random.nextFloat() * (b - a)) + a;
     }
 
     public static int randInt(int a, int b) {
-        int difference = b - a;
-        int randomOffset = random.nextInt(difference + 1);
-        return a + randomOffset;
+//        int difference = b - a;
+//        int randomOffset = random.nextInt(difference + 1);
+//        return a + randomOffset;
+        int diff = b - a;
+        return (int) (Math.floor(Math.random()*(diff+1))+a);
     }
 
     public static boolean randBoolean() {
-        return random.nextBoolean();
+        return Math.random() >= 0.500001;
     }
 
     public static float getAngle(Vector2 point, Vector2 position) {
