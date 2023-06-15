@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class Planet extends GameObject {
     public float hp;
@@ -13,6 +14,7 @@ public class Planet extends GameObject {
     public Circle collider;
     Enemy collidedEnemy;
     boolean isEnemyCollided = false;
+    public Vector2 center;
 
     public Planet(Vector2 position, float rotation, Vector2 scale, TextureRegion texture, boolean flipX, boolean flipY,
                   float hp, float armor) {
@@ -20,12 +22,20 @@ public class Planet extends GameObject {
         this.collider = new Circle(position.x, position.y, Utils.median(this.size.x * this.scale.x, this.size.y * this.scale.y));
         this.hp = hp;
         this.armor = armor;
+        center = new Vector2(0, 0);
 
     }
 
 
     public void draw(Batch batch, ArrayList<Enemy> enemies) {
         collider.setPosition(position.x, position.y);
+        collider.radius=Utils.median(this.size.x*this.scale.x, this.size.y*this.scale.y)/2;
+
+        center.x=this.size.x*this.scale.x/2;
+        center.y=this.size.y*this.scale.y/2;
+
+        collider.setPosition(position.x+collider.radius/3,
+                position.y+collider.radius/3);
         this.collidedEnemy = checkEnemyCollision(enemies);
 //        if (checkEnemyCollision(enemies) != null) isEnemyCollided = true;
         if (isEnemyCollided) {

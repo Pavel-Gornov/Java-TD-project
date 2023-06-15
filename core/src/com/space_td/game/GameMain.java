@@ -120,7 +120,9 @@ public class GameMain extends ApplicationAdapter {
             debugData = "Stars count: " + stars.size() + "\n";
         }
         planet.draw(batch, enemies);
-        shapeRenderer.circle(planet.position.x, planet.position.y, planet.collider.radius);
+        shapeRenderer.circle(planet.collider.x, planet.collider.y, planet.collider.radius);
+        shapeRenderer.point(planet.collider.x, planet.collider.y, 0);
+
         for (int i = 0; i < enemies.size(); i++) {
 
             enemies.get(i).draw(batch);
@@ -133,6 +135,10 @@ public class GameMain extends ApplicationAdapter {
 
         }
 //        dg.draw(batch);
+        shapeRenderer.setColor(0, 0.5f, 1, 1);
+
+        shapeRenderer.point(planet.position.x, planet.position.y, 0);
+        shapeRenderer.setColor(1, 0, 0, 1);
         if (batch.isDrawing()) batch.end();
         if (shapeRenderer.isDrawing()) shapeRenderer.end();
         camera.update();

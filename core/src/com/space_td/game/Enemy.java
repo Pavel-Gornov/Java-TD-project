@@ -47,13 +47,15 @@ public class Enemy extends GameObject {
         this.colliderSizeModifier = colliderSizeModifier;
         this.showColliders=false;
         this.colliderSizes = new Vector2(0.1f, 0.1f);
-        this.colliderSizes.x = this.size.x * this.colliderSizeModifier.x * this.scale.x;
-        this.colliderSizes.y = this.size.y * this.colliderSizeModifier.y * this.scale.y;
+//        this.colliderSizes.x = this.size.x * this.colliderSizeModifier.x;
+//        this.colliderSizes.y = this.size.y * this.colliderSizeModifier.y;
+        this.colliderSizes.x=this.size.x/2;
+        this.colliderSizes.y=this.size.y/2;
 
 //        this.collider = new Rectangle(originPoint.x,
 //                originPoint.y,
 //                colliderSizes.x, colliderSizes.y);
-        this.collider=new Circle(this.position.x, this.position.y, Utils.median(this.size.x * this.scale.x*this.colliderSizeModifier.x, this.size.y * this.scale.y*this.colliderSizeModifier.y));
+        this.collider=new Circle((this.position.x+(this.size.x*this.scale.x))/2, (this.position.y+(this.size.y*this.scale.y))/2, Utils.median(colliderSizes.x, colliderSizes.y));
         try {
             estimatedMooveTime = position.dst(points.get(0));
         } catch (IndexOutOfBoundsException e) {
@@ -73,6 +75,8 @@ public class Enemy extends GameObject {
             points.add(this.position);
             isPathCompleted = true;
         }
+//        collider.setX(((this.position.x+(this.size.x*this.scale.x))/2)+this.collider.radius);
+//        collider.setY(((this.position.y+(this.size.y*this.scale.y))/2)+this.collider.radius);
         if (!isPathCompleted) {
             rotation = Utils.getAngle(points.get(0), position);
             if (estimatedMooveTime <= 0) {
@@ -91,9 +95,12 @@ public class Enemy extends GameObject {
                 batch.setColor(1, 1, 0.01f, 1);
                 break;
         }
-        collider.setPosition(position.x - colliderSizes.x / 2,
-                position.y - colliderSizes.y / 2);
+//        collider.setPosition(position.x - colliderSizes.x / 2,
+//                position.y - colliderSizes.y / 2);
+        collider.setPosition(position.x + collider.radius,
+                position.y + collider.radius);
         super.draw(batch);
+
         batch.setColor(1, 1, 1, 1);
 
     }
@@ -105,6 +112,7 @@ public class Enemy extends GameObject {
         renderer.setColor(Color.RED);
         //renderer.rect(collider.x, collider.y, collider.getWidth(), collider.getHeight());
         renderer.circle(collider.x, collider.y, collider.radius);
+        renderer.point(collider.x, collider.y, 0);
 
 
     }
