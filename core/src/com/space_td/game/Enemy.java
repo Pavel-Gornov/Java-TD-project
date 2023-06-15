@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -24,7 +25,7 @@ public class Enemy extends GameObject {
     boolean isPathCompleted = false;
     public Vector2 colliderSizeModifier;
     public Vector2 colliderSizes;
-    public Rectangle collider;
+    public Circle collider;
 
 
     public enum EnemyTypes {
@@ -49,9 +50,10 @@ public class Enemy extends GameObject {
         this.colliderSizes.x = this.size.x * this.colliderSizeModifier.x * this.scale.x;
         this.colliderSizes.y = this.size.y * this.colliderSizeModifier.y * this.scale.y;
 
-        this.collider = new Rectangle(originPoint.x,
-                originPoint.y,
-                colliderSizes.x, colliderSizes.y);
+//        this.collider = new Rectangle(originPoint.x,
+//                originPoint.y,
+//                colliderSizes.x, colliderSizes.y);
+        this.collider=new Circle(this.position.x, this.position.y, Utils.median(this.size.x * this.scale.x*this.colliderSizeModifier.x, this.size.y * this.scale.y*this.colliderSizeModifier.y));
         try {
             estimatedMooveTime = position.dst(points.get(0));
         } catch (IndexOutOfBoundsException e) {
@@ -101,7 +103,8 @@ public class Enemy extends GameObject {
 
         renderer.set(ShapeRenderer.ShapeType.Line);
         renderer.setColor(Color.RED);
-        renderer.rect(collider.x, collider.y, collider.getWidth(), collider.getHeight());
+        //renderer.rect(collider.x, collider.y, collider.getWidth(), collider.getHeight());
+        renderer.circle(collider.x, collider.y, collider.radius);
 
 
     }

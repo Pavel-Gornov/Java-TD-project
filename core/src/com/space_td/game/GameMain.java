@@ -124,11 +124,13 @@ public class GameMain extends ApplicationAdapter {
         for (int i = 0; i < enemies.size(); i++) {
 
             enemies.get(i).draw(batch);
+            enemies.get(i).renderColliders(shapeRenderer);
             if (enemies.get(i).hp <= 0) {
                 enemies.remove(i);
             }
 //            if (enemies.get(i).showColliders)
-                enemies.get(i).renderColliders(shapeRenderer);
+
+
         }
 //        dg.draw(batch);
         if (batch.isDrawing()) batch.end();

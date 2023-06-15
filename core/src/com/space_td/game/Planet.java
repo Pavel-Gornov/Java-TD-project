@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
-public class Planet extends GameObject{
+public class Planet extends GameObject {
     public float hp;
     public float armor;
     public Circle collider;
@@ -26,8 +26,8 @@ public class Planet extends GameObject{
 
     public void draw(Batch batch, ArrayList<Enemy> enemies) {
         collider.setPosition(position.x, position.y);
-        this.collidedEnemy = Utils.checkForCollision(this, enemies);
-        if (Utils.checkForCollision(this, enemies) != null) isEnemyCollided = true;
+        this.collidedEnemy = checkEnemyCollision(enemies);
+//        if (checkEnemyCollision(enemies) != null) isEnemyCollided = true;
         if (isEnemyCollided) {
             System.out.println("Collision!");
             this.hp -= (collidedEnemy.damage - this.armor) < 0 ? 0 : collidedEnemy.damage - this.armor;
@@ -35,6 +35,17 @@ public class Planet extends GameObject{
             isEnemyCollided = false;
         }
         super.draw(batch);
+    }
+
+    public Enemy checkEnemyCollision(ArrayList<Enemy> enemies) {
+        if (enemies.size() > 0)
+            for (int i = 0; i < enemies.size(); i++) {
+                if (collider.overlaps(enemies.get(i).collider)) {
+                    isEnemyCollided = true;
+                    return enemies.get(i);
+                }
+            }
+        return null;
     }
 
     @Override
