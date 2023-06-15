@@ -21,7 +21,6 @@ public class Star extends GameObject {
     public float alphaChangeSpeed;
     public float alphaChangePause;
 
-    //TODO:сделать цветные звёзды.
     public Star(Vector2 position, float rotation, Vector2 size, Vector2 scale, Vector2 originPoint, TextureRegion texture, boolean flipX, boolean flipY,
                 float alpha, float alphaMax, float alphaMin, float lifetime, float alphaChangePause, float alphaChangeSpeed, boolean alphaGoalDirection, float alphaGoal) {
         super(position, rotation, size, scale, originPoint, texture, flipX, flipY);

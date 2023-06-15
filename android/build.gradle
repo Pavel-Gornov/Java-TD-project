@@ -1,6 +1,7 @@
 android {
     buildToolsVersion "33.0.1"
     compileSdkVersion 33
+    namespace 'com.space_td.game'
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -30,6 +31,10 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    buildFeatures {
+        renderScript true
+        aidl true
     }
 }
 
