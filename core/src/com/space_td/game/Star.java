@@ -1,12 +1,9 @@
 package com.space_td.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-
-import org.ietf.jgss.GSSContext;
 
 import java.util.ArrayList;
 
@@ -60,7 +57,7 @@ public class Star extends GameObject {
             super.draw(batch);
             batch.setColor(1f, 1f, 1f, 1f);
         }
-        lifetime -= (Utils.getDeltaTime());
+        lifetime -= Utils.getDTime();
         if (lifetime <= 0) {
             this.alphaGoalDirection = false;
             this.alphaGoal = 0f;
@@ -73,9 +70,9 @@ public class Star extends GameObject {
             this.alphaGoalDirection = this.alpha < this.alphaGoal;
             this.alphaChangeSpeed = Utils.randFloat(0.7f, 1.7f);
         }
-        this.alphaChangePause -= (Utils.getDeltaTime());
+        this.alphaChangePause -= Utils.getDTime();
         if (this.alphaChangePause <= 0) {
-            this.alpha += (Utils.getDeltaTime()) * this.alphaChangeSpeed * (this.alphaGoalDirection ? 1 : -1);
+            this.alpha += Utils.getDTime() * this.alphaChangeSpeed * (this.alphaGoalDirection ? 1 : -1);
         }
 
 

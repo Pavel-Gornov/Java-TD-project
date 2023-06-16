@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -141,8 +140,13 @@ public class Utils {
     public static Color randColor(){
         return new Color((float) Math.random(), (float) Math.random(), (float) Math.random(), (float) Math.random());
     }
-    public static float getDeltaTime(){
+    public static float getDTime(){
+//        float LGDXDeltaTime=Gdx.graphics.getDeltaTime();
+//        String LGDXDeltaTimeStr = LGDXDeltaTime+"";
+//        float dt = Float.parseFloat(LGDXDeltaTimeStr);
+//        System.out.println(dt+" "+LGDXDeltaTime+" x"+data.gameSpeed);
         return Gdx.graphics.getDeltaTime()*data.gameSpeed;
+
     }
 
 //    public static <T extends GameObject, T2 extends GameObject> T2 checkForCollision(T obj, ArrayList<T2> objects) {

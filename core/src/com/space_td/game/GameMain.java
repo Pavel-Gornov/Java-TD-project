@@ -1,6 +1,5 @@
 package com.space_td.game;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 
@@ -15,8 +14,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.Timer;
 
 import java.util.ArrayList;
 
@@ -51,6 +48,8 @@ public class GameMain extends ApplicationAdapter {
 
     @Override
     public void create() {
+
+        data.init();
 //        gradientColor1 = Utils.randColor();
 //        gradientColor2 = Utils.randColor();
         ScrHeight = Gdx.graphics.getHeight();
@@ -106,8 +105,8 @@ public class GameMain extends ApplicationAdapter {
 
     @Override
     public void render() {
-        counter += Utils.getDeltaTime();
-        data.gameSpeed = 1f;
+        counter += Utils.getDTime();
+
         ScreenUtils.clear(0, 0, 0, 1);
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -158,7 +157,7 @@ public class GameMain extends ApplicationAdapter {
         if (batch.isDrawing()) batch.end();
         if (shapeRenderer.isDrawing()) shapeRenderer.end();
         camera.update();
-        debugData += "\nFPS: " + (int) (1 / (Utils.getDeltaTime()));
+        debugData += "\nFPS: " + (int) (1 / Utils.getDTime());
 
         if (counter >= 0.3 & data.partyMode) {
             gradientColor1 = Utils.randColor();

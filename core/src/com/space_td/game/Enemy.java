@@ -6,13 +6,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 public class Enemy extends GameObject {
     public ArrayList<Vector2> points;
@@ -74,7 +70,7 @@ public class Enemy extends GameObject {
     }
 
     public void draw(Batch batch) {
-        if (freezeTime > 0) freezeTime -= Utils.getDeltaTime();
+        if (freezeTime > 0) freezeTime -= Utils.getDTime();
         if (freezeTime <= 0) {
             if (points.size() == 0) {
                 points.add(this.position);
@@ -88,8 +84,8 @@ public class Enemy extends GameObject {
                     estimatedMooveTime = position.dst(points.get(0));
                     points.remove(0);
                 }
-                moveForward((Utils.getDeltaTime()) * speed);
-                estimatedMooveTime -= (Utils.getDeltaTime()) * speed;
+                moveForward(Utils.getDTime() * speed);
+                estimatedMooveTime -= Utils.getDTime() * speed;
             }
 
 
@@ -167,7 +163,8 @@ public class Enemy extends GameObject {
         float hp = Utils.randFloat(10, 50 * data.gameDifficulty);
         float armor = Utils.randFloat(0, 3 * data.gameDifficulty);
         float damage = Utils.randFloat(1, 5 * data.gameDifficulty);
-        float speed = Utils.randFloat(40, 60);
+        float speedSpaceShift=data.gameSpeed/100;
+        float speed = Utils.randFloat(40+speedSpaceShift, 60+speedSpaceShift);
         int tier = 0;
         if (hp <= 100) {
             Utils.doNothing(); //TODO: не трогать
