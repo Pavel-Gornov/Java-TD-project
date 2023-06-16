@@ -141,6 +141,9 @@ public class Utils {
     public static Color randColor(){
         return new Color((float) Math.random(), (float) Math.random(), (float) Math.random(), (float) Math.random());
     }
+    public static float getDeltaTime(){
+        return Gdx.graphics.getDeltaTime()*data.gameSpeed;
+    }
 
 //    public static <T extends GameObject, T2 extends GameObject> T2 checkForCollision(T obj, ArrayList<T2> objects) {
 //        System.out.println("Collision check called by " + obj.id);

@@ -64,7 +64,7 @@ public class Enemy extends GameObject {
             this.points.add(new Vector2(0, 0));
             estimatedMooveTime = position.dst(points.get(0));
         }
-        freezeTime = 1;
+        freezeTime = 0.1f;
 
 
     }
@@ -74,7 +74,7 @@ public class Enemy extends GameObject {
     }
 
     public void draw(Batch batch) {
-        if (freezeTime > 0) freezeTime -= Gdx.graphics.getDeltaTime() * data.gameSpeed;
+        if (freezeTime > 0) freezeTime -= Utils.getDeltaTime();
         if (freezeTime <= 0) {
             if (points.size() == 0) {
                 points.add(this.position);
@@ -88,29 +88,38 @@ public class Enemy extends GameObject {
                     estimatedMooveTime = position.dst(points.get(0));
                     points.remove(0);
                 }
-                moveForward((Gdx.graphics.getDeltaTime() * data.gameSpeed) * speed);
-                estimatedMooveTime -= (Gdx.graphics.getDeltaTime() * data.gameSpeed) * speed;
+                moveForward((Utils.getDeltaTime()) * speed);
+                estimatedMooveTime -= (Utils.getDeltaTime()) * speed;
             }
 
-            switch (type) {
-                case BASIC:
-                    batch.setColor(1, 0.2f, 0.01f, 1);
-                    break;
-                case SPEEDY:
-                    batch.setColor(1, 1, 0.01f, 1);
-                    break;
-            }
+
 //        collider.setPosition(position.x - colliderSizes.x / 2,
 //                position.y - colliderSizes.y / 2);
         }
         if (hp <= 0) freezeTime = 0;
         collider.setPosition(position.x + collider.radius,
                 position.y + collider.radius);
+        if (hp <= 0) this.destroy();
+        switch (type) {
+            case BASIC:
 
+                batch.setColor(1, 0.2f, 0.01f, 1);
+                if (freezeTime > 0) batch.setColor(1, 0.2f, 0.2f, 1);
+                break;
+            case SPEEDY:
+                batch.setColor(1, 1, 0.01f, 1);
+                if (freezeTime > 0) batch.setColor(1, 1, 0.2f, 1);
+                break;
+        }
         super.draw(batch);
 
         batch.setColor(1, 1, 1, 1);
 
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        data.gameDifficulty += 0.1;
     }
 
     public void renderColliders(ShapeRenderer renderer) {
@@ -134,7 +143,7 @@ public class Enemy extends GameObject {
         if (side == 0) {
 //            pos.y = Gdx.graphics.getHeight() - 1;
 //            pos.x = Utils.randFloat(0, Gdx.graphics.getWidth());
-            pos=new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Gdx.graphics.getHeight());
+            pos = new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Gdx.graphics.getHeight());
             points.add(new Vector2(pos.x, pos.y - 10));
         }
         if (side == 1) {

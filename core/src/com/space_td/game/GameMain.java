@@ -69,20 +69,20 @@ public class GameMain extends ApplicationAdapter {
         recalcNebulaCount();
         fixNebulaArraySize();
 
-        ArrayList<Vector2> points = new ArrayList<>();
-        for (int j = 0; j < 5; j++) {
-
-            points.add(new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Utils.randFloat(0, Gdx.graphics.getHeight())));
-            for (int i = 0; i < 100; i++) {
-                Vector2 vec = new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Utils.randFloat(0, Gdx.graphics.getHeight()));
-                while ((points.size() != 0) & (points.get(points.size() - 1).dst(vec) < 10)) {
-                    vec = new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Utils.randFloat(0, Gdx.graphics.getHeight()));
-                }
-                points.add(vec);
-            }
-            enemies.add(new Enemy(new Vector2(10, 10), 0, new Vector2(2, 2), enemyTextures.get(0), false, false, 1, 1, 1, 50, 1, Enemy.EnemyTypes.BASIC, new ArrayList<>(points), new Vector2(1, 1)));
-            points.clear();
-        }
+//        ArrayList<Vector2> points = new ArrayList<>();
+//        for (int j = 0; j < 5; j++) {
+//
+//            points.add(new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Utils.randFloat(0, Gdx.graphics.getHeight())));
+//            for (int i = 0; i < 100; i++) {
+//                Vector2 vec = new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Utils.randFloat(0, Gdx.graphics.getHeight()));
+//                while ((points.size() != 0) & (points.get(points.size() - 1).dst(vec) < 10)) {
+//                    vec = new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Utils.randFloat(0, Gdx.graphics.getHeight()));
+//                }
+//                points.add(vec);
+//            }
+//            enemies.add(new Enemy(new Vector2(10, 10), 0, new Vector2(2, 2), enemyTextures.get(0), false, false, 1, 1, 1, 50, 1, Enemy.EnemyTypes.BASIC, new ArrayList<>(points), new Vector2(1, 1)));
+//            points.clear();
+//        }
 
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
@@ -106,7 +106,7 @@ public class GameMain extends ApplicationAdapter {
 
     @Override
     public void render() {
-        counter += Gdx.graphics.getDeltaTime() * data.gameSpeed;
+        counter += Utils.getDeltaTime();
         data.gameSpeed = 1f;
         ScreenUtils.clear(0, 0, 0, 1);
         batch.setProjectionMatrix(camera.combined);
@@ -137,7 +137,7 @@ public class GameMain extends ApplicationAdapter {
             enemies.get(i).draw(batch);
             //TODO: не трогать. коллайдеры!
 //            enemies.get(i).renderColliders(shapeRenderer);
-            if (enemies.get(i).hp <= 0) {
+            if (enemies.get(i).isDestroyed) {
                 enemies.remove(i);
             }
 //            if (enemies.get(i).showColliders)
@@ -146,8 +146,6 @@ public class GameMain extends ApplicationAdapter {
         }
         if (enemies.size() < (7 * (data.gameDifficulty / 100)) || (enemies.size() < 7 & data.gameDifficulty < 100)) {
             enemies.add(Enemy.spawnEnemy(planet, enemyTextures));
-
-
 
 
         }
@@ -160,11 +158,11 @@ public class GameMain extends ApplicationAdapter {
         if (batch.isDrawing()) batch.end();
         if (shapeRenderer.isDrawing()) shapeRenderer.end();
         camera.update();
-        debugData += "\nFPS: " + (int) (1 / (Gdx.graphics.getDeltaTime() * data.gameSpeed));
+        debugData += "\nFPS: " + (int) (1 / (Utils.getDeltaTime()));
 
-        if (counter >= 0.3& data.partyMode) {
-            gradientColor1=Utils.randColor();
-            gradientColor2=Utils.randColor();
+        if (counter >= 0.3 & data.partyMode) {
+            gradientColor1 = Utils.randColor();
+            gradientColor2 = Utils.randColor();
 
 //            if (gradientColor1.r > 1) gradientColor1.r -= Math.random();
 //            else gradientColor1.r += Math.random();
@@ -251,7 +249,8 @@ public class GameMain extends ApplicationAdapter {
             }
         }
     }
-    public void makeTestEnemies(){
+
+    public void makeTestEnemies() {
         ArrayList<Vector2> points = new ArrayList<>();
         for (int j = 0; j < 5; j++) {
 

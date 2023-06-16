@@ -29,17 +29,17 @@ public class Planet extends GameObject {
 
     public void draw(Batch batch, ArrayList<Enemy> enemies) {
         collider.setPosition(position.x, position.y);
-        collider.radius=Utils.median(this.size.x*this.scale.x, this.size.y*this.scale.y)/2;
+        collider.radius = Utils.median(this.size.x * this.scale.x, this.size.y * this.scale.y) / 2;
 
-        center.x=this.size.x*this.scale.x/2;
-        center.y=this.size.y*this.scale.y/2;
+        center.x = this.size.x * this.scale.x / 2;
+        center.y = this.size.y * this.scale.y / 2;
 
-        collider.setPosition(position.x+collider.radius/3,
-                position.y+collider.radius/3);
+        collider.setPosition(position.x + collider.radius / 3,
+                position.y + collider.radius / 3);
         this.collidedEnemy = checkEnemyCollision(enemies);
 //        if (checkEnemyCollision(enemies) != null) isEnemyCollided = true;
         if (isEnemyCollided) {
-            System.out.println("Collision! Velocity: "+collidedEnemy.velocity+"\n"+"Position: "+collidedEnemy.position.x+" "+collidedEnemy.position.y);
+            System.out.println("Collision! Velocity: " + collidedEnemy.velocity + "\n" + "Position: " + collidedEnemy.position.x + " " + collidedEnemy.position.y);
             this.hp -= (collidedEnemy.damage - this.armor) < 0 ? 0 : collidedEnemy.damage - this.armor;
             collidedEnemy.hp = 0;
             isEnemyCollided = false;

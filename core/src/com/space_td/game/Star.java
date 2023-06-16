@@ -60,7 +60,7 @@ public class Star extends GameObject {
             super.draw(batch);
             batch.setColor(1f, 1f, 1f, 1f);
         }
-        lifetime -= (Gdx.graphics.getDeltaTime()*data.gameSpeed);
+        lifetime -= (Utils.getDeltaTime());
         if (lifetime <= 0) {
             this.alphaGoalDirection = false;
             this.alphaGoal = 0f;
@@ -73,9 +73,9 @@ public class Star extends GameObject {
             this.alphaGoalDirection = this.alpha < this.alphaGoal;
             this.alphaChangeSpeed = Utils.randFloat(0.7f, 1.7f);
         }
-        this.alphaChangePause -= (Gdx.graphics.getDeltaTime()*data.gameSpeed);
+        this.alphaChangePause -= (Utils.getDeltaTime());
         if (this.alphaChangePause <= 0) {
-            this.alpha += (Gdx.graphics.getDeltaTime()*data.gameSpeed) * this.alphaChangeSpeed * (this.alphaGoalDirection ? 1 : -1);
+            this.alpha += (Utils.getDeltaTime()) * this.alphaChangeSpeed * (this.alphaGoalDirection ? 1 : -1);
         }
 
 
