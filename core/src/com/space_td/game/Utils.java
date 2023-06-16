@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -125,9 +126,20 @@ public class Utils {
 
         return color;
     }
-
+    public static void doNothing(){
+        String nothing = "";
+    }
+//    public static Vector2 mousePosToWorldPos(){
+////        Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+////        camera.unproject(mousePos);
+////        Vector2 worldMousePos = new Vector2(mousePos.x, mousePos.y);
+////        return worldMousePos;
+//    }
     public static float median(float a, float b) {
         return (a + b) / 2;
+    }
+    public static Color randColor(){
+        return new Color((float) Math.random(), (float) Math.random(), (float) Math.random(), (float) Math.random());
     }
 
 //    public static <T extends GameObject, T2 extends GameObject> T2 checkForCollision(T obj, ArrayList<T2> objects) {

@@ -39,7 +39,7 @@ public class Planet extends GameObject {
         this.collidedEnemy = checkEnemyCollision(enemies);
 //        if (checkEnemyCollision(enemies) != null) isEnemyCollided = true;
         if (isEnemyCollided) {
-            System.out.println("Collision!");
+            System.out.println("Collision! Velocity: "+collidedEnemy.velocity+"\n"+"Position: "+collidedEnemy.position.x+" "+collidedEnemy.position.y);
             this.hp -= (collidedEnemy.damage - this.armor) < 0 ? 0 : collidedEnemy.damage - this.armor;
             collidedEnemy.hp = 0;
             isEnemyCollided = false;

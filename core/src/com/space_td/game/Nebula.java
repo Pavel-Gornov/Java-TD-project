@@ -32,6 +32,11 @@ public class Nebula extends GameObject {
         super.draw(batch);
         batch.setColor(1, 1, 1, 1);
     }
+    public void updateColor(Vector2 vec1, Vector2 vec2, Color color1, Color color2){
+        Color rGrColor = Utils.getGradientColor(vec1, color1, vec2, color2, position);
+        rGrColor.a = Utils.randFloat(0.5f, 1f);
+        this.color=rGrColor;
+    }
 
     @Override
     public void update(float delta) {

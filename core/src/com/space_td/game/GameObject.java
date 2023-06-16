@@ -25,6 +25,8 @@ public abstract class GameObject<ColliderType extends Octree.Collider> implement
     //    public Rectangle collider;
     public ColliderType collider;
     public String id;
+    public float velocity;
+    Vector2 oldPos;
 
     public GameObject(Vector2 position, float rotation, Vector2 size, Vector2 scale, Vector2 originPoint, TextureRegion texture, boolean flipX, boolean flipY) {
         this.position = position;
@@ -80,6 +82,7 @@ public abstract class GameObject<ColliderType extends Octree.Collider> implement
         //TODO:демона в виде нижних двух строчек оставить но не выпускать. Это нам ещё пригодится.
 //        this.originPoint.x=this.position.x*this.size.x*this.scale.x/2;
 //        this.originPoint.y=this.position.y*this.size.y*this.scale.y/2;
+
         if (animation != null) {
             batch.draw(animation.getKeyFrame(0f), position.x, position.y, size.x, size.y);
         } else {
@@ -96,6 +99,9 @@ public abstract class GameObject<ColliderType extends Octree.Collider> implement
                 onShowColliders();
             }
         }
+        if (oldPos!=null){
+            velocity=this.position.dst(oldPos);
+        }  oldPos=position;
     }
 
     public abstract void onShowColliders();

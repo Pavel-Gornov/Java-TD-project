@@ -1,5 +1,6 @@
 package com.space_td.game;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 
@@ -14,6 +15,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.Timer;
 
 import java.util.ArrayList;
 
@@ -44,9 +47,12 @@ public class GameMain extends ApplicationAdapter {
     public Color gradientColor1 = new Color(0.01f, 0.9f, 0.8f, 0.7f);
     public Color gradientColor2 = new Color(1, 0, 0.83f, 0.7f);
     public ShapeRenderer shapeRenderer;
+    float counter;
 
     @Override
     public void create() {
+//        gradientColor1 = Utils.randColor();
+//        gradientColor2 = Utils.randColor();
         ScrHeight = Gdx.graphics.getHeight();
         ScrWidth = Gdx.graphics.getWidth();
 
@@ -64,7 +70,7 @@ public class GameMain extends ApplicationAdapter {
         fixNebulaArraySize();
 
         ArrayList<Vector2> points = new ArrayList<>();
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < 5; j++) {
 
             points.add(new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Utils.randFloat(0, Gdx.graphics.getHeight())));
             for (int i = 0; i < 100; i++) {
@@ -100,6 +106,8 @@ public class GameMain extends ApplicationAdapter {
 
     @Override
     public void render() {
+        counter += Gdx.graphics.getDeltaTime() * data.gameSpeed;
+        data.gameSpeed = 1f;
         ScreenUtils.clear(0, 0, 0, 1);
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -107,7 +115,7 @@ public class GameMain extends ApplicationAdapter {
         camera.unproject(mousePos);
         Vector2 worldMousePos = new Vector2(mousePos.x, mousePos.y);
 //        System.out.println("Mouse position: " + mousePos.x + " " + mousePos.y);
-//        dg.rotation += Gdx.graphics.getDeltaTime() * 2f;
+//        dg.rotation += (Gdx.graphics.getDeltaTime()*data.gameSpeed) * 2f;
         batch.begin();
         shapeRenderer.begin();
 
@@ -120,13 +128,15 @@ public class GameMain extends ApplicationAdapter {
             debugData = "Stars count: " + stars.size() + "\n";
         }
         planet.draw(batch, enemies);
-        shapeRenderer.circle(planet.collider.x, planet.collider.y, planet.collider.radius);
-        shapeRenderer.point(planet.collider.x, planet.collider.y, 0);
+        //TODO: не трогать, рендер коллайдеров
+//        shapeRenderer.circle(planet.collider.x, planet.collider.y, planet.collider.radius);
+//        shapeRenderer.point(planet.collider.x, planet.collider.y, 0);
 
         for (int i = 0; i < enemies.size(); i++) {
 
             enemies.get(i).draw(batch);
-            enemies.get(i).renderColliders(shapeRenderer);
+            //TODO: не трогать. коллайдеры!
+//            enemies.get(i).renderColliders(shapeRenderer);
             if (enemies.get(i).hp <= 0) {
                 enemies.remove(i);
             }
@@ -134,15 +144,49 @@ public class GameMain extends ApplicationAdapter {
 
 
         }
-//        dg.draw(batch);
-        shapeRenderer.setColor(0, 0.5f, 1, 1);
+        if (enemies.size() < (7 * (data.gameDifficulty / 100)) || (enemies.size() < 7 & data.gameDifficulty < 100)) {
+            enemies.add(Enemy.spawnEnemy(planet, enemyTextures));
 
-        shapeRenderer.point(planet.position.x, planet.position.y, 0);
-        shapeRenderer.setColor(1, 0, 0, 1);
+
+
+
+        }
+//        dg.draw(batch);
+        //TODO: не удалять. рендер коллайдеров
+//        shapeRenderer.setColor(0, 0.5f, 1, 1);
+//
+//        shapeRenderer.point(planet.position.x, planet.position.y, 0);
+//        shapeRenderer.setColor(1, 0, 0, 1);
         if (batch.isDrawing()) batch.end();
         if (shapeRenderer.isDrawing()) shapeRenderer.end();
         camera.update();
-        debugData += "\nFPS: " + (int) (1 / Gdx.graphics.getDeltaTime());
+        debugData += "\nFPS: " + (int) (1 / (Gdx.graphics.getDeltaTime() * data.gameSpeed));
+
+        if (counter >= 0.3& data.partyMode) {
+            gradientColor1=Utils.randColor();
+            gradientColor2=Utils.randColor();
+
+//            if (gradientColor1.r > 1) gradientColor1.r -= Math.random();
+//            else gradientColor1.r += Math.random();
+//            if (gradientColor1.g > 1) gradientColor1.r -= Math.random();
+//            else gradientColor1.g += Math.random();
+//            if (gradientColor1.b > 1) gradientColor1.r -= Math.random();
+//            else gradientColor1.b += Math.random();
+//            if (gradientColor2.r > 1) gradientColor1.r -= Math.random();
+//            else gradientColor2.r += Math.random();
+//            if (gradientColor2.g > 1) gradientColor1.r -= Math.random();
+//            else gradientColor2.g += Math.random();
+//            if (gradientColor2.b > 1) gradientColor1.r -= Math.random();
+//            else gradientColor2.b += Math.random();
+
+            counter = 0;
+            for (int i = 0; i < nebulas.size(); i++) {
+                Vector2 topLeft = new Vector2(camera.position.x - camera.viewportWidth / 2, camera.position.y + camera.viewportHeight / 2);
+                Vector2 bottomRight = new Vector2(camera.position.x + camera.viewportWidth / 2, camera.position.y - camera.viewportHeight / 2);
+
+                nebulas.get(i).updateColor(topLeft, bottomRight, gradientColor1, gradientColor2);
+            }
+        }
     }
 
     @Override
@@ -205,6 +249,22 @@ public class GameMain extends ApplicationAdapter {
             while (nebulas.size() > nebulaLimit) {
                 nebulas.remove(0);
             }
+        }
+    }
+    public void makeTestEnemies(){
+        ArrayList<Vector2> points = new ArrayList<>();
+        for (int j = 0; j < 5; j++) {
+
+            points.add(new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Utils.randFloat(0, Gdx.graphics.getHeight())));
+            for (int i = 0; i < 100; i++) {
+                Vector2 vec = new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Utils.randFloat(0, Gdx.graphics.getHeight()));
+                while ((points.size() != 0) & (points.get(points.size() - 1).dst(vec) < 10)) {
+                    vec = new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Utils.randFloat(0, Gdx.graphics.getHeight()));
+                }
+                points.add(vec);
+            }
+            enemies.add(new Enemy(new Vector2(10, 10), 0, new Vector2(2, 2), enemyTextures.get(0), false, false, 1, 1, 1, 50, 1, Enemy.EnemyTypes.BASIC, new ArrayList<>(points), new Vector2(1, 1)));
+            points.clear();
         }
     }
 //    public static Vector2 randScreenPoint(Camera camera){
