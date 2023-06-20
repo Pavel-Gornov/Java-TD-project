@@ -45,14 +45,8 @@ public class Enemy extends GameObject {
         this.colliderSizeModifier = colliderSizeModifier;
         this.showColliders = false;
         this.colliderSizes = new Vector2(0.1f, 0.1f);
-//        this.colliderSizes.x = this.size.x * this.colliderSizeModifier.x;
-//        this.colliderSizes.y = this.size.y * this.colliderSizeModifier.y;
         this.colliderSizes.x = this.size.x / 2;
         this.colliderSizes.y = this.size.y / 2;
-
-//        this.collider = new Rectangle(originPoint.x,
-//                originPoint.y,
-//                colliderSizes.x, colliderSizes.y);
         this.collider = new Circle((this.position.x + (this.size.x * this.scale.x)) / 2, (this.position.y + (this.size.y * this.scale.y)) / 2, Utils.median(colliderSizes.x, colliderSizes.y));
         try {
             estimatedMooveTime = position.dst(points.get(0));
@@ -76,8 +70,6 @@ public class Enemy extends GameObject {
                 points.add(this.position);
                 isPathCompleted = true;
             }
-//        collider.setX(((this.position.x+(this.size.x*this.scale.x))/2)+this.collider.radius);
-//        collider.setY(((this.position.y+(this.size.y*this.scale.y))/2)+this.collider.radius);
             if (!isPathCompleted) {
                 rotation = Utils.getAngle(points.get(0), position);
                 if (estimatedMooveTime <= 0) {
@@ -88,9 +80,6 @@ public class Enemy extends GameObject {
                 estimatedMooveTime -= Utils.getDTime() * speed;
             }
 
-
-//        collider.setPosition(position.x - colliderSizes.x / 2,
-//                position.y - colliderSizes.y / 2);
         }
         if (hp <= 0) freezeTime = 0;
         collider.setPosition(position.x + collider.radius,
@@ -123,7 +112,6 @@ public class Enemy extends GameObject {
 
         renderer.set(ShapeRenderer.ShapeType.Line);
         renderer.setColor(Color.RED);
-        //renderer.rect(collider.x, collider.y, collider.getWidth(), collider.getHeight());
         renderer.circle(collider.x, collider.y, collider.radius);
         renderer.point(collider.x, collider.y, 0);
 
@@ -137,26 +125,18 @@ public class Enemy extends GameObject {
 
 
         if (side == 0) {
-//            pos.y = Gdx.graphics.getHeight() - 1;
-//            pos.x = Utils.randFloat(0, Gdx.graphics.getWidth());
             pos = new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Gdx.graphics.getHeight());
             points.add(new Vector2(pos.x, pos.y - 10));
         }
         if (side == 1) {
-//            pos.y = Utils.randFloat(0, Gdx.graphics.getHeight());
-//            pos.x = Gdx.graphics.getWidth() - 1;
             pos = new Vector2(Gdx.graphics.getWidth(), Utils.randFloat(0, Gdx.graphics.getHeight()));
             points.add(new Vector2(pos.x - 10, pos.y));
         }
         if (side == 2) {
-//            pos.y = 1;
-//            pos.x = Utils.randFloat(0, Gdx.graphics.getWidth());
             pos = new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), 0f);
             points.add(new Vector2(pos.x, pos.y + 10));
         }
         if (side == 3) {
-//            pos.y = Utils.randFloat(0, Gdx.graphics.getHeight());
-//            pos.x = 1;
             pos = new Vector2(0f, Utils.randFloat(0, Gdx.graphics.getHeight()));
             points.add(new Vector2(pos.x + 10, pos.y));
         }
@@ -192,7 +172,6 @@ public class Enemy extends GameObject {
         points.add(new Vector2(planet.position));
         points.add(new Vector2(planet.position));
         Enemy enem = new Enemy(pos, 0, new Vector2(2, 2), textureRegions.get(tier), false, false, hp, armor, damage, speed, tier, type, new ArrayList<>(points), new Vector2(1, 1));
-//        Enemy enem = new Enemy(new Vector2(10, 10), 0, new Vector2(2, 2), textureRegions.get(tier), false, false, hp, armor, damage, speed, tier, type, new ArrayList<>(points), new Vector2(1, 1));
         enem.isPathCompleted = false;
 
 

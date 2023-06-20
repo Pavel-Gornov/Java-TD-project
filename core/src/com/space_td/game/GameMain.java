@@ -50,8 +50,6 @@ public class GameMain extends ApplicationAdapter {
     public void create() {
 
         data.init();
-//        gradientColor1 = Utils.randColor();
-//        gradientColor2 = Utils.randColor();
         ScrHeight = Gdx.graphics.getHeight();
         ScrWidth = Gdx.graphics.getWidth();
 
@@ -68,26 +66,9 @@ public class GameMain extends ApplicationAdapter {
         recalcNebulaCount();
         fixNebulaArraySize();
 
-//        ArrayList<Vector2> points = new ArrayList<>();
-//        for (int j = 0; j < 5; j++) {
-//
-//            points.add(new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Utils.randFloat(0, Gdx.graphics.getHeight())));
-//            for (int i = 0; i < 100; i++) {
-//                Vector2 vec = new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Utils.randFloat(0, Gdx.graphics.getHeight()));
-//                while ((points.size() != 0) & (points.get(points.size() - 1).dst(vec) < 10)) {
-//                    vec = new Vector2(Utils.randFloat(0, Gdx.graphics.getWidth()), Utils.randFloat(0, Gdx.graphics.getHeight()));
-//                }
-//                points.add(vec);
-//            }
-//            enemies.add(new Enemy(new Vector2(10, 10), 0, new Vector2(2, 2), enemyTextures.get(0), false, false, 1, 1, 1, 50, 1, Enemy.EnemyTypes.BASIC, new ArrayList<>(points), new Vector2(1, 1)));
-//            points.clear();
-//        }
-
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
 
-//        dg = new DummyGameObject(new Vector2(ScrWidth / 2, ScrHeight / 2), 0, new Vector2(1, 1), new TextureRegion(new Texture("planet.png")), false, false);
-//        dg.scale.set(new Vector2(4, 4));
         planetScale = new Vector2(3, 3);
         planetPos = new Vector2(ScrWidth / 2, ScrHeight / 2);
         planet = new Planet(planetPos, 0, planetScale, planetTexture, false, false, 10000, 0);
@@ -113,8 +94,6 @@ public class GameMain extends ApplicationAdapter {
         Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         camera.unproject(mousePos);
         Vector2 worldMousePos = new Vector2(mousePos.x, mousePos.y);
-//        System.out.println("Mouse position: " + mousePos.x + " " + mousePos.y);
-//        dg.rotation += (Gdx.graphics.getDeltaTime()*data.gameSpeed) * 2f;
         batch.begin();
         shapeRenderer.begin();
 
@@ -128,18 +107,13 @@ public class GameMain extends ApplicationAdapter {
         }
         planet.draw(batch, enemies);
         //TODO: не трогать, рендер коллайдеров
-//        shapeRenderer.circle(planet.collider.x, planet.collider.y, planet.collider.radius);
-//        shapeRenderer.point(planet.collider.x, planet.collider.y, 0);
 
         for (int i = 0; i < enemies.size(); i++) {
-
             enemies.get(i).draw(batch);
             //TODO: не трогать. коллайдеры!
-//            enemies.get(i).renderColliders(shapeRenderer);
             if (enemies.get(i).isDestroyed) {
                 enemies.remove(i);
             }
-//            if (enemies.get(i).showColliders)
 
 
         }
@@ -148,12 +122,7 @@ public class GameMain extends ApplicationAdapter {
 
 
         }
-//        dg.draw(batch);
         //TODO: не удалять. рендер коллайдеров
-//        shapeRenderer.setColor(0, 0.5f, 1, 1);
-//
-//        shapeRenderer.point(planet.position.x, planet.position.y, 0);
-//        shapeRenderer.setColor(1, 0, 0, 1);
         if (batch.isDrawing()) batch.end();
         if (shapeRenderer.isDrawing()) shapeRenderer.end();
         camera.update();
@@ -163,18 +132,6 @@ public class GameMain extends ApplicationAdapter {
             gradientColor1 = Utils.randColor();
             gradientColor2 = Utils.randColor();
 
-//            if (gradientColor1.r > 1) gradientColor1.r -= Math.random();
-//            else gradientColor1.r += Math.random();
-//            if (gradientColor1.g > 1) gradientColor1.r -= Math.random();
-//            else gradientColor1.g += Math.random();
-//            if (gradientColor1.b > 1) gradientColor1.r -= Math.random();
-//            else gradientColor1.b += Math.random();
-//            if (gradientColor2.r > 1) gradientColor1.r -= Math.random();
-//            else gradientColor2.r += Math.random();
-//            if (gradientColor2.g > 1) gradientColor1.r -= Math.random();
-//            else gradientColor2.g += Math.random();
-//            if (gradientColor2.b > 1) gradientColor1.r -= Math.random();
-//            else gradientColor2.b += Math.random();
 
             counter = 0;
             for (int i = 0; i < nebulas.size(); i++) {
@@ -265,7 +222,4 @@ public class GameMain extends ApplicationAdapter {
             points.clear();
         }
     }
-//    public static Vector2 randScreenPoint(Camera camera){
-//
-//    }
 }

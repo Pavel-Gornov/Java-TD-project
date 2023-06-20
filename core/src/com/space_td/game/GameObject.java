@@ -22,7 +22,6 @@ public abstract class GameObject<ColliderType extends Octree.Collider> implement
     boolean flipX;
     boolean flipY;
     boolean showColliders = false;
-    //    public Rectangle collider;
     public ColliderType collider;
     public String id;
     public float velocity;

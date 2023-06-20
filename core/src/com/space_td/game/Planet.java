@@ -37,7 +37,6 @@ public class Planet extends GameObject {
         collider.setPosition(position.x + collider.radius / 3,
                 position.y + collider.radius / 3);
         this.collidedEnemy = checkEnemyCollision(enemies);
-//        if (checkEnemyCollision(enemies) != null) isEnemyCollided = true;
         if (isEnemyCollided) {
             System.out.println("Collision! Velocity: " + collidedEnemy.velocity + "\n" + "Position: " + collidedEnemy.position.x + " " + collidedEnemy.position.y);
             this.hp -= (collidedEnemy.damage - this.armor) < 0 ? 0 : collidedEnemy.damage - this.armor;

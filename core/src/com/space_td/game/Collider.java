@@ -22,19 +22,4 @@ public class Collider {
         this.colliderType = ColliderType.CIRCLE;
     }
 
-//    public boolean overlaps(Collider otherCollider){
-//        if (this.colliderType==ColliderType.CIRCLE){
-//            if (otherCollider.colliderType==ColliderType.CIRCLE)
-//                return cCollider.overlaps(otherCollider.cCollider);
-//            if (otherCollider.colliderType==ColliderType.RECTANGLE)
-//
-//                return cCollider.overlaps(otherCollider.rCollider);
-//
-//        }
-//        if (this.colliderType==ColliderType.RECTANGLE){
-//
-//        }
-//
-//
-//    }
 }

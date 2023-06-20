@@ -8,10 +8,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Utils {
-    private static final Random random = new Random();
 
     public static Vector2 calcCenter(float sizeX, float sizeY) {
         return new Vector2(sizeX / 2f, sizeY / 2f);
@@ -60,14 +58,9 @@ public class Utils {
             return a;
         float diff = b - a;
         return (float) (Math.random() * diff) + a;
-
-//        return (random.nextFloat() * (b - a)) + a;
     }
 
     public static int randInt(int a, int b) {
-//        int difference = b - a;
-//        int randomOffset = random.nextInt(difference + 1);
-//        return a + randomOffset;
         int diff = b - a;
         return (int) (Math.floor(Math.random() * (diff + 1)) + a);
     }
@@ -128,12 +121,7 @@ public class Utils {
     public static void doNothing(){
         String nothing = "";
     }
-//    public static Vector2 mousePosToWorldPos(){
-////        Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-////        camera.unproject(mousePos);
-////        Vector2 worldMousePos = new Vector2(mousePos.x, mousePos.y);
-////        return worldMousePos;
-//    }
+
     public static float median(float a, float b) {
         return (a + b) / 2;
     }
@@ -141,49 +129,11 @@ public class Utils {
         return new Color((float) Math.random(), (float) Math.random(), (float) Math.random(), (float) Math.random());
     }
     public static float getDTime(){
-//        float LGDXDeltaTime=Gdx.graphics.getDeltaTime();
-//        String LGDXDeltaTimeStr = LGDXDeltaTime+"";
-//        float dt = Float.parseFloat(LGDXDeltaTimeStr);
-//        System.out.println(dt+" "+LGDXDeltaTime+" x"+data.gameSpeed);
         return Gdx.graphics.getDeltaTime()*data.gameSpeed;
 
     }
 
-//    public static <T extends GameObject, T2 extends GameObject> T2 checkForCollision(T obj, ArrayList<T2> objects) {
-//        System.out.println("Collision check called by " + obj.id);
-//
-//        if (obj.collider == null || objects.size() == 0) {
-//            System.out.println(obj.collider == null ? "No collider!": "No objects to check in " + objects.getClass().getName());
-//            return null;
-//        }
-//
-//        for (int i = 0; i < objects.size(); i++) {
-//
-//            if (obj.collider.overlaps(objects.get(i).collider)) {
-//                System.out.println("Collision with " + objects.get(i).id);
-//                return objects.get(i);
-//            }
-//        }
-//        System.out.println("No collisions with objects from " + objects.getClass().getName());
-//        return null;
-//    }
 public static <T extends GameObject, T2 extends GameObject> T2 checkForCollision(T obj, ArrayList<T2> objects) {
-//    System.out.println("Collision check called by " + obj.id);
-//
-//    if (obj.collider == null || objects.size() == 0) {
-//        System.out.println(obj.collider == null ? "No collider!": "No objects to check in " + objects.getClass().getName());
-//        return null;
-//    }
-//
-//    for (int i = 0; i < objects.size(); i++) {
-//
-//        if (obj.collider.overlaps(objects.get(i).collider)) {
-//            System.out.println("Collision with " + objects.get(i).id);
-//            return objects.get(i);
-//        }
-//    }
-//    System.out.println("No collisions with objects from " + objects.getClass().getName());
-//    return null;
     return null;
 }
 
