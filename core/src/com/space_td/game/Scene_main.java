@@ -1,23 +1,30 @@
 package com.space_td.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
+import org.ietf.jgss.GSSContext;
+
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
-public class Scene_main implements Screen {
+public class Scene_main implements Screen, InputProcessor {
     private SpriteBatch batch;
     private Planet planet;
     public TextureRegion planetTexture;
@@ -51,8 +58,14 @@ public class Scene_main implements Screen {
     TextureRegion mouseTexture;
     public float mouseDamage;
     public float mouseAttacksPerSecond;
+
+    public Table table_topRight;
+    Label infoData;
+    BitmapFont font_default = new BitmapFont();
+
     @Override
     public void show() {
+
         System.out.println("Shown scene: main");
         if (mouseDamage==0){
             mouseDamage=5;
@@ -63,7 +76,7 @@ public class Scene_main implements Screen {
         mouseTexture=new TextureRegion(new Texture("mouseSphere.png"));
         mouse=new Mouse(new Vector2(0, 0), 0, new Vector2(8, 8), new Vector2(1, 1), new Vector2(0,0), mouseTexture, false, false, 16, mouseDamage, mouseAttacksPerSecond);
         inputProc = new InputProc();
-        Gdx.input.setInputProcessor(inputProc);
+//        Gdx.input.setInputProcessor(stage);
         data.init();
 //        gradientColor1 = Utils.randColor();
 //        gradientColor2 = Utils.randColor();
@@ -110,6 +123,16 @@ public class Scene_main implements Screen {
         planet = new Planet(planetPos, 0, planetScale, planetTexture, false, false, 10000, 0);
 
         camera.update();
+
+        table_topRight=new Table();
+        table_topRight.top().right();
+        infoData = new Label("This. Is. LABEL!", new Label.LabelStyle(font_default, new Color(1, 1, 1, 1)));
+        infoData.setSize(256, 128);
+
+        table_topRight.add(infoData).padTop(10).padRight(10);
+        infoData.setPosition(0, ScrHeight-80);
+        stage.addActor(table_topRight);
+        stage.addActor(infoData);
     }
     protected void load_textures() {
         planetTexture = new TextureRegion(new Texture("planet.png"));
@@ -120,6 +143,9 @@ public class Scene_main implements Screen {
 
     @Override
     public void render(float delta) {
+
+        Gdx.input.setInputProcessor(this);
+        infoData.setText("Planet hp: "+Utils.roundFloat(planet.hp, 2, RoundingMode.DOWN)+"\nGame difficulty: "+Utils.roundFloat(data.gameDifficulty, 2, RoundingMode.DOWN));
         batch.begin();
         shapeRenderer.begin();
         //System.out.println("Render called: main scene");
@@ -173,11 +199,13 @@ public class Scene_main implements Screen {
 //
 //        shapeRenderer.point(planet.position.x, planet.position.y, 0);
 //        shapeRenderer.setColor(1, 0, 0, 1);
-        stage.act();
 
+        stage.act(delta);
         if (batch.isDrawing()) batch.end();
+
         stage.draw();
         if (shapeRenderer.isDrawing()) shapeRenderer.end();
+
         camera.update();
         GameMain.debugData += "\nFPS: " + (int) (1 / Utils.getDTime());
 
@@ -305,5 +333,49 @@ public class Scene_main implements Screen {
             enemies.add(new Enemy(new Vector2(10, 10), 0, new Vector2(2, 2), enemyTextures.get(0), false, false, 1, 1, 1, 50, 1, Enemy.EnemyTypes.BASIC, new ArrayList<>(points), new Vector2(1, 1)));
             points.clear();
         }
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        data.mousePos=new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+        System.out.println("touch down");
+
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        data.mousePos=new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+        return true;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(float amountX, float amountY) {
+        return false;
     }
 }

@@ -4,9 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -125,10 +128,12 @@ public class Utils {
 
         return color;
     }
-    public static void doNothing(){
+
+    public static void doNothing() {
         String nothing = "";
     }
-//    public static Vector2 mousePosToWorldPos(){
+
+    //    public static Vector2 mousePosToWorldPos(){
 ////        Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 ////        camera.unproject(mousePos);
 ////        Vector2 worldMousePos = new Vector2(mousePos.x, mousePos.y);
@@ -137,19 +142,21 @@ public class Utils {
     public static float median(float a, float b) {
         return (a + b) / 2;
     }
-    public static Color randColor(){
+
+    public static Color randColor() {
         return new Color((float) Math.random(), (float) Math.random(), (float) Math.random(), (float) Math.random());
     }
-    public static float getDTime(){
+
+    public static float getDTime() {
 //        float LGDXDeltaTime=Gdx.graphics.getDeltaTime();
 //        String LGDXDeltaTimeStr = LGDXDeltaTime+"";
 //        float dt = Float.parseFloat(LGDXDeltaTimeStr);
 //        System.out.println(dt+" "+LGDXDeltaTime+" x"+data.gameSpeed);
-        return Gdx.graphics.getDeltaTime()*data.gameSpeed;
+        return Gdx.graphics.getDeltaTime() * data.gameSpeed;
 
     }
 
-//    public static <T extends GameObject, T2 extends GameObject> T2 checkForCollision(T obj, ArrayList<T2> objects) {
+    //    public static <T extends GameObject, T2 extends GameObject> T2 checkForCollision(T obj, ArrayList<T2> objects) {
 //        System.out.println("Collision check called by " + obj.id);
 //
 //        if (obj.collider == null || objects.size() == 0) {
@@ -167,7 +174,7 @@ public class Utils {
 //        System.out.println("No collisions with objects from " + objects.getClass().getName());
 //        return null;
 //    }
-public static <T extends GameObject, T2 extends GameObject> T2 checkForCollision(T obj, ArrayList<T2> objects) {
+    public static <T extends GameObject, T2 extends GameObject> T2 checkForCollision(T obj, ArrayList<T2> objects) {
 //    System.out.println("Collision check called by " + obj.id);
 //
 //    if (obj.collider == null || objects.size() == 0) {
@@ -184,8 +191,14 @@ public static <T extends GameObject, T2 extends GameObject> T2 checkForCollision
 //    }
 //    System.out.println("No collisions with objects from " + objects.getClass().getName());
 //    return null;
-    return null;
-}
+        return null;
+    }
+
+    public static float roundFloat(float flt, int scale, RoundingMode mode) {
+        BigDecimal bd = BigDecimal.valueOf(flt);//Великое Зло возвращается!
+        bd = bd.setScale(scale, mode);
+        return bd.floatValue();
+    }
 
 
 }
