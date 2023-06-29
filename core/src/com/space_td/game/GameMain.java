@@ -13,7 +13,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 
@@ -31,6 +34,10 @@ public class GameMain extends ApplicationAdapter {
     public float ScrWidth;
     public float ScrHeight;
     public OrthographicCamera camera;
+    public Stage stage;
+    public ExtendViewport viewport;
+    InputProc inputProc;
+
     DummyGameObject dg;
     ArrayList<Star> stars = new ArrayList<>();
     ArrayList<Enemy> enemies = new ArrayList<>();
@@ -45,18 +52,32 @@ public class GameMain extends ApplicationAdapter {
     public Color gradientColor2 = new Color(1, 0, 0.83f, 0.7f);
     public ShapeRenderer shapeRenderer;
     float counter;
+    public Mouse mouse;
+    TextureRegion mouseTexture;
+    public float mouseDamage;
+    public float mouseAttacksPerSecond;
 
     @Override
     public void create() {
-
+        if (mouseDamage==0){
+            mouseDamage=5;
+        }
+        if (mouseAttacksPerSecond==0){
+            mouseAttacksPerSecond=5;
+        }
+        mouseTexture=new TextureRegion(new Texture("mouseSphere.png"));
+        mouse=new Mouse(new Vector2(0, 0), 0, new Vector2(8, 8), new Vector2(1, 1), new Vector2(0,0), mouseTexture, false, false, 16, mouseDamage, mouseAttacksPerSecond);
+        inputProc = new InputProc();
+        Gdx.input.setInputProcessor(inputProc);
         data.init();
 //        gradientColor1 = Utils.randColor();
 //        gradientColor2 = Utils.randColor();
         ScrHeight = Gdx.graphics.getHeight();
         ScrWidth = Gdx.graphics.getWidth();
-
+        viewport=new ExtendViewport(ScrWidth, ScrHeight);
         camera = new OrthographicCamera(ScrWidth, ScrHeight);
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
+
 
         load_textures();
 
@@ -85,6 +106,7 @@ public class GameMain extends ApplicationAdapter {
 
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
+        stage = new Stage(viewport, batch);
 
 //        dg = new DummyGameObject(new Vector2(ScrWidth / 2, ScrHeight / 2), 0, new Vector2(1, 1), new TextureRegion(new Texture("planet.png")), false, false);
 //        dg.scale.set(new Vector2(4, 4));
@@ -115,6 +137,7 @@ public class GameMain extends ApplicationAdapter {
         Vector2 worldMousePos = new Vector2(mousePos.x, mousePos.y);
 //        System.out.println("Mouse position: " + mousePos.x + " " + mousePos.y);
 //        dg.rotation += (Gdx.graphics.getDeltaTime()*data.gameSpeed) * 2f;
+
         batch.begin();
         shapeRenderer.begin();
 
@@ -148,6 +171,7 @@ public class GameMain extends ApplicationAdapter {
 
 
         }
+        mouse.draw(batch, enemies);
 //        dg.draw(batch);
         //TODO: не удалять. рендер коллайдеров
 //        shapeRenderer.setColor(0, 0.5f, 1, 1);
@@ -158,6 +182,8 @@ public class GameMain extends ApplicationAdapter {
         if (shapeRenderer.isDrawing()) shapeRenderer.end();
         camera.update();
         debugData += "\nFPS: " + (int) (1 / Utils.getDTime());
+        stage.act();
+        stage.draw();
 
         if (counter >= 0.3 & data.partyMode) {
             gradientColor1 = Utils.randColor();
@@ -191,6 +217,9 @@ public class GameMain extends ApplicationAdapter {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
         camera.update();
+        viewport.setMinWorldWidth(width);
+        viewport.setMinWorldHeight(height);
+        stage.setViewport(viewport);
         recalcStarCount();
         fixStarsArraySize();
         recalcNebulaCount();
@@ -207,6 +236,7 @@ public class GameMain extends ApplicationAdapter {
             stars.get(i).dispose();
         }
         shapeRenderer.dispose();
+        stage.dispose();
     }
 
     public void recalcStarCount() {
