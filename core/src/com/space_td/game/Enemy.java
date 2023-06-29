@@ -182,9 +182,12 @@ public class Enemy extends GameObject {
             tier = 6;
         } else tier = 7;
         EnemyTypes type = EnemyTypes.BASIC;
-        if (data.gameDifficulty < 100 & data.gameDifficulty > 50) {
+        if (data.gameDifficulty < 100 & data.gameDifficulty > 5) {
             int typeInt = Utils.randInt(0, 1);
             type = typeInt == 0 ? EnemyTypes.BASIC : EnemyTypes.SPEEDY;
+        }
+        if (type==EnemyTypes.SPEEDY){
+            speed = Utils.randFloat(40+(speedSpaceShift*2), 60+(speedSpaceShift*3));
         }
 
         points.add(new Vector2(planet.position));

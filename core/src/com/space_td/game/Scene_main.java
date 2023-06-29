@@ -77,7 +77,7 @@ public class Scene_main implements Screen, InputProcessor {
         mouse=new Mouse(new Vector2(0, 0), 0, new Vector2(8, 8), new Vector2(1, 1), new Vector2(0,0), mouseTexture, false, false, 16, mouseDamage, mouseAttacksPerSecond);
         inputProc = new InputProc();
 //        Gdx.input.setInputProcessor(stage);
-        data.init();
+
 //        gradientColor1 = Utils.randColor();
 //        gradientColor2 = Utils.randColor();
         ScrHeight = Gdx.graphics.getHeight();

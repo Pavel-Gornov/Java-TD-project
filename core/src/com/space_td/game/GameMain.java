@@ -1,5 +1,6 @@
 package com.space_td.game;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -22,17 +23,23 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.Vector;
 
 
 public class GameMain extends Game {
     public static String debugData;
     public Screen scene_main;
-
+//    Vector2 pos;
     @Override
     public void create() {
+//        if (Gdx.app.getType()== Application.ApplicationType.Desktop){
+//
+//        }
+        data.init();
         scene_main=new Scene_main();
         System.out.println("Main scene created");
         setScreen(scene_main);
+//        System.out.println(pos.x*10);
     }
 
 
@@ -45,7 +52,7 @@ public class GameMain extends Game {
 
     @Override
     public void resize(int width, int height) {
-
+        getScreen().resize(width, height);
     }
 
     @Override
