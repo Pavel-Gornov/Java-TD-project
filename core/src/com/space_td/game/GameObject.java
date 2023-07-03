@@ -1,9 +1,12 @@
 package com.space_td.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Octree;
 import com.badlogic.gdx.math.Rectangle;
@@ -28,6 +31,12 @@ public abstract class GameObject<ColliderType extends Octree.Collider> implement
     public float velocity;
     Vector2 oldPos;
     public boolean isDestroyed;
+    public float glowSize = 0;
+    public ShaderProgram glowShader = Shaders.glowShader;
+    public Texture textureFromRegion;
+    public Color glowColor=new Color(1, 1, 1, 1);
+
+
 
     public GameObject(Vector2 position, float rotation, Vector2 size, Vector2 scale, Vector2 originPoint, TextureRegion texture, boolean flipX, boolean flipY) {
         this.position = position;
@@ -40,6 +49,7 @@ public abstract class GameObject<ColliderType extends Octree.Collider> implement
         this.flipY = flipY;
         this.id = this.getClass().getName() + Utils.randInt(0, 10000) + "";
         this.isDestroyed = false;
+        this.textureFromRegion=Utils.getTextureFromTextureRegion(this.texture);
     }
 
     public GameObject(Vector2 position, float rotation, Vector2 size, Vector2 scale, TextureRegion texture, boolean flipX, boolean flipY) {
@@ -53,6 +63,7 @@ public abstract class GameObject<ColliderType extends Octree.Collider> implement
         this.flipY = flipY;
         this.id = this.getClass().getName() + Utils.randInt(0, 10000) + "";
         this.isDestroyed = false;
+        this.textureFromRegion=Utils.getTextureFromTextureRegion(this.texture);
     }
 
     public GameObject(Vector2 position, float rotation, Vector2 scale, TextureRegion texture, boolean flipX, boolean flipY) {
@@ -66,6 +77,7 @@ public abstract class GameObject<ColliderType extends Octree.Collider> implement
         this.flipY = flipY;
         this.id = this.getClass().getName() + Utils.randInt(0, 10000) + "";
         this.isDestroyed = false;
+        this.textureFromRegion=Utils.getTextureFromTextureRegion(this.texture);
     }
 
     public GameObject(Vector2 position, float rotation, TextureRegion texture, Vector2 scale, Vector2 originPoint, boolean flipX, boolean flipY) {
@@ -79,6 +91,7 @@ public abstract class GameObject<ColliderType extends Octree.Collider> implement
         this.flipY = flipY;
         this.id = this.getClass().getName() + Utils.randInt(0, 10000) + "";
         this.isDestroyed = false;
+        this.textureFromRegion=Utils.getTextureFromTextureRegion(this.texture);
     }
 
     public abstract void update(float delta);
@@ -98,8 +111,23 @@ public abstract class GameObject<ColliderType extends Octree.Collider> implement
 
             if (this.flipY & this.scale.y > 0)
                 this.scale.y *= -1;
+            if (!Shaders.glowShader.isCompiled()) {
+                Gdx.app.error("Shader", Shaders.glowShader.getLog());
+                System.out.println("Shader error!");
+                // Обработка ошибок компиляции, если необходимо
+            } else if (glowSize > 0) {
 
-            batch.draw(texture, this.position.x, this.position.y, this.originPoint.x, this.originPoint.y, this.size.x, this.size.y, this.scale.x, this.scale.y, this.rotation);
+                glowShader.begin();
+                textureFromRegion.bind(0);
+                glowShader.setUniformf("u_glowStrength", glowSize);
+                glowShader.setUniformi("u_texture", 0);
+                glowShader.setUniformf("u_glowColor", glowColor);
+                glowShader.end();
+                batch.setShader(glowShader);
+            }
+                batch.draw(texture, this.position.x, this.position.y, this.originPoint.x, this.originPoint.y, this.size.x, this.size.y, this.scale.x, this.scale.y, this.rotation);
+            batch.setShader(null);
+
             if (this.showColliders) {
                 onShowColliders();
             }

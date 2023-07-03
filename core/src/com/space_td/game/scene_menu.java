@@ -82,6 +82,7 @@ public class scene_menu implements Screen, InputProcessor {
         fixStarsArraySize();
         recalcNebulaCount();
         fixNebulaArraySize();
+
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setAutoShapeType(true);
         batch = new SpriteBatch();

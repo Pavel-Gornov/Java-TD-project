@@ -75,7 +75,9 @@ public class Scene_main implements Screen, InputProcessor {
         }
         mouseTexture = new TextureRegion(new Texture("mouseSphere.png"));
         mouse = new Mouse(new Vector2(0, 0), 0, new Vector2(8, 8), new Vector2(1, 1), new Vector2(0, 0), mouseTexture, false, false, 16, mouseDamage, mouseAttacksPerSecond);
+//        mouse.glowSize=5;
         inputProc = new InputProc();
+
 //        Gdx.input.setInputProcessor(stage);
 
 //        gradientColor1 = Utils.randColor();
@@ -133,6 +135,8 @@ public class Scene_main implements Screen, InputProcessor {
         infoData.setPosition(0, ScrHeight - 80);
         stage.addActor(table_topRight);
         stage.addActor(infoData);
+//        planet.glowSize=50;
+//        mouse.glowSize=5;
     }
 
     protected void load_textures() {
@@ -148,6 +152,7 @@ public class Scene_main implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(this);
         infoData.setText("Planet hp: " + Utils.roundFloat(planet.hp, 2, RoundingMode.DOWN) + "\nGame difficulty: " + Utils.roundFloat(data.gameDifficulty, 2, RoundingMode.DOWN));
         batch.begin();
+
         shapeRenderer.begin();
         //System.out.println("Render called: main scene");
         counter += Utils.getDTime();

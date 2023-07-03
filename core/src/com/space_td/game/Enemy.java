@@ -200,6 +200,8 @@ public class Enemy extends GameObject {
 
 
         enem.estimatedMooveTime = enem.position.dst(points.get(0));
+
+//        enem.glowSize=1;
         return enem;
 
     }

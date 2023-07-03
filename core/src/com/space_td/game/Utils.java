@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
+import org.w3c.dom.Text;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -198,6 +200,20 @@ public class Utils {
         BigDecimal bd = BigDecimal.valueOf(flt);//Великое Зло возвращается!
         bd = bd.setScale(scale, mode);
         return bd.floatValue();
+    }
+
+    public static Texture getTextureFromTextureRegion(TextureRegion textureRegion) {
+
+
+        Texture texture = textureRegion.getTexture();
+
+        int regionX = textureRegion.getRegionX();
+        int regionY = textureRegion.getRegionY();
+        int regionWidth = textureRegion.getRegionWidth();
+        int regionHeight = textureRegion.getRegionHeight();
+
+        TextureRegion fragment = new TextureRegion(texture, regionX, regionY, regionWidth, regionHeight);
+        return fragment.getTexture();
     }
 
 
