@@ -67,14 +67,14 @@ public class Scene_main implements Screen, InputProcessor {
     public void show() {
 
         System.out.println("Shown scene: main");
-        if (mouseDamage==0){
-            mouseDamage=5;
+        if (mouseDamage == 0) {
+            mouseDamage = 5;
         }
-        if (mouseAttacksPerSecond==0){
-            mouseAttacksPerSecond=5;
+        if (mouseAttacksPerSecond == 0) {
+            mouseAttacksPerSecond = 5;
         }
-        mouseTexture=new TextureRegion(new Texture("mouseSphere.png"));
-        mouse=new Mouse(new Vector2(0, 0), 0, new Vector2(8, 8), new Vector2(1, 1), new Vector2(0,0), mouseTexture, false, false, 16, mouseDamage, mouseAttacksPerSecond);
+        mouseTexture = new TextureRegion(new Texture("mouseSphere.png"));
+        mouse = new Mouse(new Vector2(0, 0), 0, new Vector2(8, 8), new Vector2(1, 1), new Vector2(0, 0), mouseTexture, false, false, 16, mouseDamage, mouseAttacksPerSecond);
         inputProc = new InputProc();
 //        Gdx.input.setInputProcessor(stage);
 
@@ -82,7 +82,7 @@ public class Scene_main implements Screen, InputProcessor {
 //        gradientColor2 = Utils.randColor();
         ScrHeight = Gdx.graphics.getHeight();
         ScrWidth = Gdx.graphics.getWidth();
-        viewport=new ExtendViewport(ScrWidth, ScrHeight);
+        viewport = new ExtendViewport(ScrWidth, ScrHeight);
         camera = new OrthographicCamera(ScrWidth, ScrHeight);
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
 
@@ -124,16 +124,17 @@ public class Scene_main implements Screen, InputProcessor {
 
         camera.update();
 
-        table_topRight=new Table();
+        table_topRight = new Table();
         table_topRight.top().right();
         infoData = new Label("This. Is. LABEL!", new Label.LabelStyle(font_default, new Color(1, 1, 1, 1)));
         infoData.setSize(256, 128);
 
         table_topRight.add(infoData).padTop(10).padRight(10);
-        infoData.setPosition(0, ScrHeight-80);
+        infoData.setPosition(0, ScrHeight - 80);
         stage.addActor(table_topRight);
         stage.addActor(infoData);
     }
+
     protected void load_textures() {
         planetTexture = new TextureRegion(new Texture("planet.png"));
         enemyTextures = Utils.splitRegion(new Texture("enemies.png"), 16, 16);
@@ -145,7 +146,7 @@ public class Scene_main implements Screen, InputProcessor {
     public void render(float delta) {
 
         Gdx.input.setInputProcessor(this);
-        infoData.setText("Planet hp: "+Utils.roundFloat(planet.hp, 2, RoundingMode.DOWN)+"\nGame difficulty: "+Utils.roundFloat(data.gameDifficulty, 2, RoundingMode.DOWN));
+        infoData.setText("Planet hp: " + Utils.roundFloat(planet.hp, 2, RoundingMode.DOWN) + "\nGame difficulty: " + Utils.roundFloat(data.gameDifficulty, 2, RoundingMode.DOWN));
         batch.begin();
         shapeRenderer.begin();
         //System.out.println("Render called: main scene");
@@ -159,7 +160,6 @@ public class Scene_main implements Screen, InputProcessor {
         Vector2 worldMousePos = new Vector2(mousePos.x, mousePos.y);
 //        System.out.println("Mouse position: " + mousePos.x + " " + mousePos.y);
 //        dg.rotation += (Gdx.graphics.getDeltaTime()*data.gameSpeed) * 2f;
-
 
 
         for (int i = 0; i < nebulas.size(); i++) {
@@ -278,6 +278,7 @@ public class Scene_main implements Screen, InputProcessor {
         shapeRenderer.dispose();
         stage.dispose();
     }
+
     public void recalcStarCount() {
         windowSpace = (long) Gdx.graphics.getHeight() * Gdx.graphics.getWidth();
         screenBordersMedian = (Gdx.graphics.getHeight() + Gdx.graphics.getWidth()) >> 1;
@@ -352,7 +353,7 @@ public class Scene_main implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        data.mousePos=new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+        data.mousePos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
         System.out.println("touch down");
 
         return true;
@@ -365,7 +366,7 @@ public class Scene_main implements Screen, InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        data.mousePos=new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+        data.mousePos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
         return true;
     }
 

@@ -29,6 +29,7 @@ import java.util.Vector;
 public class GameMain extends Game {
     public static String debugData;
     public Screen scene_main;
+    public Screen scene_menu;
 //    Vector2 pos;
     @Override
     public void create() {
@@ -36,9 +37,10 @@ public class GameMain extends Game {
 //
 //        }
         data.init();
-        scene_main=new Scene_main();
-        System.out.println("Main scene created");
-        setScreen(scene_main);
+//        scene_main=new Scene_main();
+        scene_menu=new scene_menu();
+//        System.out.println("Main scene created");
+        setScreen(scene_menu);
 //        System.out.println(pos.x*10);
     }
 
@@ -57,7 +59,7 @@ public class GameMain extends Game {
 
     @Override
     public void dispose() {
-
+        getScreen().dispose();
     }
 
 
