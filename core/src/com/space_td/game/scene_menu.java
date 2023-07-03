@@ -13,9 +13,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+
 
 import java.util.ArrayList;
 
@@ -41,6 +46,9 @@ public class scene_menu implements Screen, InputProcessor {
     float screenBordersMedian;
     public Color gradientColor1 = new Color(0.01f, 0.9f, 0.8f, 0.7f);
     public Color gradientColor2 = new Color(1, 0, 0.83f, 0.7f);
+    Button button_play;
+    Skin skin;
+    com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle buttonPlayStyle=new Button.ButtonStyle();
 
 
 
@@ -52,6 +60,21 @@ public class scene_menu implements Screen, InputProcessor {
         viewport = new ExtendViewport(ScrWidth, ScrHeight);
         camera = new OrthographicCamera(ScrWidth, ScrHeight);
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
+        skin = new Skin();
+        skin.add("buttonPlay", new Texture("buttonPlay.png"));
+        skin.add("buttonPlay_down", new Texture("buttonPlay_down.png"));
+        buttonPlayStyle.up= skin.getDrawable("buttonPlay");
+        buttonPlayStyle.down= skin.getDrawable("buttonPlay_down");
+        button_play=new Button(buttonPlayStyle);
+        button_play.setPosition((int) (ScrWidth/2), (int) (ScrHeight/2));
+        button_play.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+//                Gdx.app.log("Button", "Clicked!");
+                System.out.println("Clicked!");
+                GameMain.messages.add("open scene_main");
+            }
+        });
 
 
         load_textures();
@@ -64,7 +87,7 @@ public class scene_menu implements Screen, InputProcessor {
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
         stage = new Stage(viewport, batch);
-
+        stage.addActor(button_play);
         camera.update();
         mainTrack.play();
     }
@@ -78,7 +101,7 @@ public class scene_menu implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
-        Gdx.input.setInputProcessor(this);
+        Gdx.input.setInputProcessor(stage);
         batch.begin();
         shapeRenderer.begin();
         ScreenUtils.clear(0, 0, 0, 1);

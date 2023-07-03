@@ -168,7 +168,7 @@ public class Scene_main implements Screen, InputProcessor {
         for (int i = 0; i < stars.size(); i++) {
             if (stars.get(i).isDestroyed) stars.set(i, Star.makeStar(starTextures));
             stars.get(i).draw(batch);
-            GameMain.debugData = "Stars count: " + stars.size() + "\n";
+//            GameMain.debugData = "Stars count: " + stars.size() + "\n";
         }
         planet.draw(batch, enemies);
         //TODO: не трогать, рендер коллайдеров
@@ -207,7 +207,7 @@ public class Scene_main implements Screen, InputProcessor {
         if (shapeRenderer.isDrawing()) shapeRenderer.end();
 
         camera.update();
-        GameMain.debugData += "\nFPS: " + (int) (1 / Utils.getDTime());
+//        GameMain.debugData += "\nFPS: " + (int) (1 / Utils.getDTime());
 
 
         if (counter >= 0.3 & data.partyMode) {

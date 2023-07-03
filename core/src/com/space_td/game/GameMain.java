@@ -28,9 +28,11 @@ import java.util.Vector;
 
 public class GameMain extends Game {
     public static String debugData;
+    public static ArrayList<String> messages = new ArrayList<>();
     public Screen scene_main;
     public Screen scene_menu;
-//    Vector2 pos;
+
+    //    Vector2 pos;
     @Override
     public void create() {
 //        if (Gdx.app.getType()== Application.ApplicationType.Desktop){
@@ -38,18 +40,27 @@ public class GameMain extends Game {
 //        }
         data.init();
 //        scene_main=new Scene_main();
-        scene_menu=new scene_menu();
+        scene_menu = new scene_menu();
 //        System.out.println("Main scene created");
         setScreen(scene_menu);
 //        System.out.println(pos.x*10);
     }
 
 
-
-
     @Override
     public void render() {
+        if (messages.size() > 0) {
+            for (int i = 0; i < messages.size(); i++) {
+                if (messages.get(i).equals("open scene_main")) {
+                    scene_main = new Scene_main();
+                    setScreen(scene_main);
+                    messages.remove(i);
+                    break;
+                }
+            }
+        }
         getScreen().render(Gdx.graphics.getDeltaTime());
+        debugData = String.valueOf(Gdx.graphics.getFramesPerSecond());
     }
 
     @Override
