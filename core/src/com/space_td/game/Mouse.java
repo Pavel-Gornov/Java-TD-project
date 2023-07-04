@@ -35,7 +35,9 @@ public class Mouse extends GameObject {
         onShowColliders();
         checkCollisions(enemies);
         attackCD-= Utils.getDTime();
+        batch.setColor(1, 1, 1, 0.3f);
         super.draw(batch);
+        batch.setColor(1, 1, 1, 1);
     }
     public void checkCollisions(ArrayList<Enemy> enemies){
         if (enemies.size() > 0)

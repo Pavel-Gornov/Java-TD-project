@@ -31,6 +31,7 @@ public class GameMain extends Game {
     public static ArrayList<String> messages = new ArrayList<>();
     public Screen scene_main;
     public Screen scene_menu;
+    public Screen scene_startMain;
 
     //    Vector2 pos;
     @Override
@@ -51,9 +52,17 @@ public class GameMain extends Game {
     public void render() {
         if (messages.size() > 0) {
             for (int i = 0; i < messages.size(); i++) {
+                if (messages.get(i).equals("open scene_startMain")) {
+                    scene_startMain = new Scene_startMain();
+                    setScreen(scene_startMain);
+                    scene_startMain.show();
+                    messages.remove(i);
+                    break;
+                }
                 if (messages.get(i).equals("open scene_main")) {
                     scene_main = new Scene_main();
                     setScreen(scene_main);
+                    scene_main.show();
                     messages.remove(i);
                     break;
                 }

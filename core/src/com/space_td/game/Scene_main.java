@@ -3,6 +3,7 @@ package com.space_td.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -13,18 +14,24 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-
-import org.ietf.jgss.GSSContext;
 
 import java.math.RoundingMode;
 import java.util.ArrayList;
 
+import javax.swing.GroupLayout;
+
 public class Scene_main implements Screen, InputProcessor {
+    public static int money;
     private SpriteBatch batch;
     private Planet planet;
     public TextureRegion planetTexture;
@@ -62,6 +69,30 @@ public class Scene_main implements Screen, InputProcessor {
     public Table table_topRight;
     Label infoData;
     BitmapFont font_default = new BitmapFont();
+    public Gun gun;
+    public ArrayList<Bullet> bullets = new ArrayList<>();
+    public Sound shootSound;
+    public int damageUpgradePrice = 100;
+    public float damageUpgradePriceUp = 1.5f;
+    public float damage;
+    public float basicDamage = 10;
+    public int damageUpgradeBought = 0;
+
+    public int attacksPerSecondUpgradePrice = 100;
+    public float attacksPerSecondUpgradePriceUp = 2;
+    public float attacksPerSecond;
+    public float basicAttacksPerSecond = 4;
+    public int attacksPerSecondUpgradeBought = 0;
+
+    public Button.ButtonStyle upgrade_damage_style;
+    public Button.ButtonStyle upgrade_APS_style;
+    public Button upgrade_damage;
+    public Button upgrade_APS;
+    public Skin skin;
+    public Label upgrade_damage_priceDisplay;
+    public Label upgrade_APS_priceDisplay;
+    public float shootSoundVolume=1f;
+
 
     @Override
     public void show() {
@@ -74,7 +105,7 @@ public class Scene_main implements Screen, InputProcessor {
             mouseAttacksPerSecond = 5;
         }
         mouseTexture = new TextureRegion(new Texture("mouseSphere.png"));
-        mouse = new Mouse(new Vector2(0, 0), 0, new Vector2(8, 8), new Vector2(1, 1), new Vector2(0, 0), mouseTexture, false, false, 16, mouseDamage, mouseAttacksPerSecond);
+        mouse = new Mouse(new Vector2(0, 0), 0, new Vector2(8, 8), new Vector2(1, 1), new Vector2(0, 0), mouseTexture, false, false, 16, damage * 2, attacksPerSecond * 1.5f);
 //        mouse.glowSize=5;
         inputProc = new InputProc();
 
@@ -90,6 +121,7 @@ public class Scene_main implements Screen, InputProcessor {
 
 
         load_textures();
+        gun = new Gun(planetPos, 0, new Vector2(1, 1), planetTexture, false, false, true, 10, 5, false, 100);
 
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setAutoShapeType(true);
@@ -132,11 +164,58 @@ public class Scene_main implements Screen, InputProcessor {
         infoData.setSize(256, 128);
 
         table_topRight.add(infoData).padTop(10).padRight(10);
-        infoData.setPosition(0, ScrHeight - 80);
+        infoData.setPosition(0, ScrHeight - 100);
         stage.addActor(table_topRight);
         stage.addActor(infoData);
 //        planet.glowSize=50;
 //        mouse.glowSize=5;
+        skin = new Skin();
+        skin.add("upgrade_damage1", new Texture("upgrade_damage1.png"));
+        skin.add("upgrade_damage2", new Texture("upgrade_damage2.png"));
+        skin.add("upgrade_APS1", new Texture("upgrade_APS1.png"));
+        skin.add("upgrade_APS2", new Texture("upgrade_APS2.png"));
+        upgrade_damage_style = new Button.ButtonStyle();
+        upgrade_damage_style.up = skin.getDrawable("upgrade_damage1");
+        upgrade_damage_style.down = skin.getDrawable("upgrade_damage2");
+        upgrade_APS_style = new Button.ButtonStyle();
+        upgrade_APS_style.up = skin.getDrawable("upgrade_APS1");
+        upgrade_APS_style.down = skin.getDrawable("upgrade_APS2");
+
+        upgrade_damage = new Button(upgrade_damage_style);
+        upgrade_APS = new Button(upgrade_APS_style);
+        upgrade_damage.setPosition(ScrWidth - 40, ScrHeight - (16 + 32));
+        upgrade_APS.setPosition(ScrWidth - 40, ScrHeight - (16 + (36 * 2)));
+
+        upgrade_damage.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Clicked!");
+                if (Scene_main.money >= damageUpgradePrice) {
+                    Scene_main.money -= damageUpgradePrice;
+                    damageUpgradeBought++;
+                }
+            }
+        });
+        upgrade_APS.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Clicked!");
+                if (Scene_main.money >= attacksPerSecondUpgradePrice) {
+                    Scene_main.money -= attacksPerSecondUpgradePrice;
+                    attacksPerSecondUpgradeBought++;
+                }
+            }
+        });
+        upgrade_damage_priceDisplay = new Label(damageUpgradePrice + "", new Label.LabelStyle(font_default, new Color(1, 1, 1, 1)));
+        upgrade_APS_priceDisplay = new Label(attacksPerSecondUpgradePrice + "", new Label.LabelStyle(font_default, new Color(1, 1, 1, 1)));
+        upgrade_damage_priceDisplay.setPosition(ScrWidth - 60, upgrade_damage.getY()+8);
+        upgrade_APS_priceDisplay.setPosition(ScrWidth - 60, upgrade_APS.getY()+8); //36 потому что +4 для отступа
+        upgrade_damage_priceDisplay.setAlignment(Align.right);
+        upgrade_APS_priceDisplay.setAlignment(Align.right);
+        stage.addActor(upgrade_damage);
+        stage.addActor(upgrade_APS);
+        stage.addActor(upgrade_damage_priceDisplay);
+        stage.addActor(upgrade_APS_priceDisplay);
     }
 
     protected void load_textures() {
@@ -144,14 +223,32 @@ public class Scene_main implements Screen, InputProcessor {
         enemyTextures = Utils.splitRegion(new Texture("enemies.png"), 16, 16);
         starTextures = Utils.splitRegion(new Texture("stars.png"), 8, 8);
         nebulaTextures = Utils.splitRegion(new Texture("nebulas_white.png"), 64, 64);
+        shootSound = Gdx.audio.newSound(Gdx.files.internal("pop.wav"));
     }
 
     @Override
     public void render(float delta) {
+        damageUpgradePrice = (int) (100 + (100 * damageUpgradeBought * damageUpgradePriceUp));
+        attacksPerSecondUpgradePrice = (int) (100 + (100 * attacksPerSecondUpgradeBought * attacksPerSecondUpgradePriceUp));
+        attacksPerSecond = (basicAttacksPerSecond * attacksPerSecondUpgradeBought) + basicAttacksPerSecond;
+        damage = (basicDamage * damageUpgradeBought) + basicDamage;
+        Gdx.input.setInputProcessor(stage);
+        data.mousePos=new Vector2(Gdx.input.getX(), ScrHeight-Gdx.input.getY());
+        infoData.setText("Planet hp: " + Utils.roundFloat(planet.hp, 2, RoundingMode.DOWN) + "\nGame difficulty: " + Utils.roundFloat(data.gameDifficulty, 2, RoundingMode.DOWN) + "\nMoney: " + Scene_main.money);
+        upgrade_damage_priceDisplay.setText(damage+"\n"+damageUpgradePrice);
+        upgrade_APS_priceDisplay.setText(attacksPerSecond+"\n"+attacksPerSecondUpgradePrice);
 
-        Gdx.input.setInputProcessor(this);
-        infoData.setText("Planet hp: " + Utils.roundFloat(planet.hp, 2, RoundingMode.DOWN) + "\nGame difficulty: " + Utils.roundFloat(data.gameDifficulty, 2, RoundingMode.DOWN));
+        gun.shootsPerSecond=attacksPerSecond;
+        gun.damage=damage;
+        mouse.damage=damage*2;
+        mouse.attacksPerSecond= (float) (attacksPerSecond*1.5);
         batch.begin();
+
+        if (shootSoundVolume > 0.3f){
+            shootSoundVolume-=0.001f;
+        }if (shootSoundVolume > 0.1f&shootSoundVolume<=0.3f){
+            shootSoundVolume-=0.000001f;
+        }
 
         shapeRenderer.begin();
         //System.out.println("Render called: main scene");
@@ -166,7 +263,12 @@ public class Scene_main implements Screen, InputProcessor {
 //        System.out.println("Mouse position: " + mousePos.x + " " + mousePos.y);
 //        dg.rotation += (Gdx.graphics.getDeltaTime()*data.gameSpeed) * 2f;
 
-
+//        for (Bullet b: bullets
+//             ) {
+//            if (b.isDestroyed){
+//                bullets.remove(b);
+//            }
+//        }
         for (int i = 0; i < nebulas.size(); i++) {
             nebulas.get(i).draw(batch);
         }
@@ -176,6 +278,17 @@ public class Scene_main implements Screen, InputProcessor {
 //            GameMain.debugData = "Stars count: " + stars.size() + "\n";
         }
         planet.draw(batch, enemies);
+        gun.draw(batch, bullets, mouseTexture, shootSound, shootSoundVolume);
+        if (bullets.size() > 0) {
+            for (int i = 0; i < bullets.size(); i++) {
+//                bullets.get(i).moveForward(bullets.get(i).speed * Utils.getDTime());
+                bullets.get(i).draw(batch, enemies);
+
+                if (bullets.get(i).isDestroyed) {
+                    bullets.remove(i);
+                }
+            }
+        }
         //TODO: не трогать, рендер коллайдеров
 //        shapeRenderer.circle(planet.collider.x, planet.collider.y, planet.collider.radius);
 //        shapeRenderer.point(planet.collider.x, planet.collider.y, 0);
@@ -282,6 +395,7 @@ public class Scene_main implements Screen, InputProcessor {
         }
         shapeRenderer.dispose();
         stage.dispose();
+        shootSound.dispose();
     }
 
     public void recalcStarCount() {

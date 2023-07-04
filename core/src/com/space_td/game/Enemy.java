@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Enemy extends GameObject {
     public ArrayList<Vector2> points;
@@ -115,7 +116,8 @@ public class Enemy extends GameObject {
 
     public void onDestroy() {
         super.onDestroy();
-        data.gameDifficulty += 0.1;
+        data.gameDifficulty += 0.01;
+        Scene_main.money+=this.tier*data.gameDifficulty+1;
     }
 
     public void renderColliders(ShapeRenderer renderer) {
