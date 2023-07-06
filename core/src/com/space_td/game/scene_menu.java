@@ -1,5 +1,6 @@
 package com.space_td.game;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -16,13 +17,17 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 
 import java.util.ArrayList;
+
+import jdk.tools.jlink.internal.Platform;
 
 public class scene_menu implements Screen, InputProcessor {
     public Music mainTrack;
@@ -48,8 +53,10 @@ public class scene_menu implements Screen, InputProcessor {
     public Color gradientColor2 = new Color(1, 0, 0.83f, 0.7f);
     Button button_play;
     Skin skin;
-    com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle buttonPlayStyle=new Button.ButtonStyle();
-
+    com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle buttonPlayStyle = new Button.ButtonStyle();
+    public Texture logo;
+    public Image logo_ui;
+    public Application.ApplicationType platform = Gdx.app.getType();
 
 
     @Override
@@ -63,10 +70,10 @@ public class scene_menu implements Screen, InputProcessor {
         skin = new Skin();
         skin.add("buttonPlay", new Texture("buttonPlay.png"));
         skin.add("buttonPlay_down", new Texture("buttonPlay_down.png"));
-        buttonPlayStyle.up= skin.getDrawable("buttonPlay");
-        buttonPlayStyle.down= skin.getDrawable("buttonPlay_down");
-        button_play=new Button(buttonPlayStyle);
-        button_play.setPosition((int) ((ScrWidth/2)-(button_play.getScaleX()/2)), (int) ((ScrHeight/2)-(button_play.getScaleY()/2)));
+        buttonPlayStyle.up = skin.getDrawable("buttonPlay");
+        buttonPlayStyle.down = skin.getDrawable("buttonPlay_down");
+        button_play = new Button(buttonPlayStyle);
+        button_play.setPosition((int) ((ScrWidth / 2) - (button_play.getScaleX() / 2)), (int) ((ScrHeight / 2) - (button_play.getScaleY() / 2)));
         button_play.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -82,12 +89,19 @@ public class scene_menu implements Screen, InputProcessor {
         fixStarsArraySize();
         recalcNebulaCount();
         fixNebulaArraySize();
+        logo_ui = new Image(logo);
+//        logo_ui.setScale(platform== Application.ApplicationType.Desktop ? 0.4f : 0.6f);
+        logo_ui.setScale(0.4f);
 
+        logo_ui.setPosition((ScrWidth / 2) - (102.4f * 1.9f), ScrHeight - 140);
+
+        logo_ui.setAlign(Align.center);
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setAutoShapeType(true);
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
         stage = new Stage(viewport, batch);
+        stage.addActor(logo_ui);
         stage.addActor(button_play);
         camera.update();
         mainTrack.play();
@@ -96,8 +110,9 @@ public class scene_menu implements Screen, InputProcessor {
     private void load_textures() {
         starTextures = Utils.splitRegion(new Texture("stars.png"), 8, 8);
         nebulaTextures = Utils.splitRegion(new Texture("nebulas_white.png"), 64, 64);
-        mainTrack=Gdx.audio.newMusic(Gdx.files.internal("SpaceTD-MenuTheme.mp3"));
+        mainTrack = Gdx.audio.newMusic(Gdx.files.internal("SpaceTD-MenuTheme.mp3"));
         mainTrack.setLooping(true);
+        logo = new Texture("SpaceTDLogo0_4_mvp.png");
     }
 
     @Override
@@ -215,6 +230,7 @@ public class scene_menu implements Screen, InputProcessor {
     public boolean scrolled(float amountX, float amountY) {
         return false;
     }
+
     public void recalcStarCount() {
         windowSpace = (long) Gdx.graphics.getHeight() * Gdx.graphics.getWidth();
         screenBordersMedian = (Gdx.graphics.getHeight() + Gdx.graphics.getWidth()) >> 1;

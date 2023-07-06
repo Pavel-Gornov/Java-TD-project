@@ -91,7 +91,8 @@ public class Scene_main implements Screen, InputProcessor {
     public Skin skin;
     public Label upgrade_damage_priceDisplay;
     public Label upgrade_APS_priceDisplay;
-    public float shootSoundVolume=1f;
+    public float shootSoundVolume = 1f;
+
 
 
     @Override
@@ -208,8 +209,8 @@ public class Scene_main implements Screen, InputProcessor {
         });
         upgrade_damage_priceDisplay = new Label(damageUpgradePrice + "", new Label.LabelStyle(font_default, new Color(1, 1, 1, 1)));
         upgrade_APS_priceDisplay = new Label(attacksPerSecondUpgradePrice + "", new Label.LabelStyle(font_default, new Color(1, 1, 1, 1)));
-        upgrade_damage_priceDisplay.setPosition(ScrWidth - 60, upgrade_damage.getY()+8);
-        upgrade_APS_priceDisplay.setPosition(ScrWidth - 60, upgrade_APS.getY()+8); //36 потому что +4 для отступа
+        upgrade_damage_priceDisplay.setPosition(ScrWidth - 60, upgrade_damage.getY() + 8);
+        upgrade_APS_priceDisplay.setPosition(ScrWidth - 60, upgrade_APS.getY() + 8); //36 потому что +4 для отступа
         upgrade_damage_priceDisplay.setAlignment(Align.right);
         upgrade_APS_priceDisplay.setAlignment(Align.right);
         stage.addActor(upgrade_damage);
@@ -230,24 +231,25 @@ public class Scene_main implements Screen, InputProcessor {
     public void render(float delta) {
         damageUpgradePrice = (int) (100 + (100 * damageUpgradeBought * damageUpgradePriceUp));
         attacksPerSecondUpgradePrice = (int) (100 + (100 * attacksPerSecondUpgradeBought * attacksPerSecondUpgradePriceUp));
-        attacksPerSecond = (basicAttacksPerSecond * attacksPerSecondUpgradeBought) + basicAttacksPerSecond;
+        attacksPerSecond = (basicAttacksPerSecond * (attacksPerSecondUpgradeBought*0.5f)) + basicAttacksPerSecond;
         damage = (basicDamage * damageUpgradeBought) + basicDamage;
         Gdx.input.setInputProcessor(stage);
-        data.mousePos=new Vector2(Gdx.input.getX(), ScrHeight-Gdx.input.getY());
+        data.mousePos = new Vector2(Gdx.input.getX(), ScrHeight - Gdx.input.getY());
         infoData.setText("Planet hp: " + Utils.roundFloat(planet.hp, 2, RoundingMode.DOWN) + "\nGame difficulty: " + Utils.roundFloat(data.gameDifficulty, 2, RoundingMode.DOWN) + "\nMoney: " + Scene_main.money);
-        upgrade_damage_priceDisplay.setText(damage+"\n"+damageUpgradePrice);
-        upgrade_APS_priceDisplay.setText(attacksPerSecond+"\n"+attacksPerSecondUpgradePrice);
+        upgrade_damage_priceDisplay.setText(damage + "\n" + damageUpgradePrice);
+        upgrade_APS_priceDisplay.setText(attacksPerSecond + "\n" + attacksPerSecondUpgradePrice);
 
-        gun.shootsPerSecond=attacksPerSecond;
-        gun.damage=damage;
-        mouse.damage=damage*2;
-        mouse.attacksPerSecond= (float) (attacksPerSecond*1.5);
+        gun.shootsPerSecond = attacksPerSecond;
+        gun.damage = damage;
+        mouse.damage = damage * 2;
+        mouse.attacksPerSecond = (float) (attacksPerSecond * 1.5);
         batch.begin();
 
-        if (shootSoundVolume > 0.3f){
-            shootSoundVolume-=0.001f;
-        }if (shootSoundVolume > 0.1f&shootSoundVolume<=0.3f){
-            shootSoundVolume-=0.000001f;
+        if (shootSoundVolume > 0.3f) {
+            shootSoundVolume -= 0.001f;
+        }
+        if (shootSoundVolume > 0.1f & shootSoundVolume <= 0.3f) {
+            shootSoundVolume -= 0.000001f;
         }
 
         shapeRenderer.begin();

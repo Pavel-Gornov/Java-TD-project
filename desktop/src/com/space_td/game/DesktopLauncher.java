@@ -12,7 +12,7 @@ public class DesktopLauncher {
 		data.init();
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setForegroundFPS(60);
-        config.setTitle("Space TD | v0.3.1 Menu update"); //TODO: пофиксить загрузчик сплешей что бы вставить data.splashes[Utils.randInt(0, data.splashes.length-1)] сюда
+        config.setTitle("Space TD | v0.4 MVP edition"); //TODO: пофиксить загрузчик сплешей что бы вставить data.splashes[Utils.randInt(0, data.splashes.length-1)] сюда
         config.setResizable(false);
         new Lwjgl3Application(new GameMain(), config);
 //        Runnable rb = new Runnable() {
