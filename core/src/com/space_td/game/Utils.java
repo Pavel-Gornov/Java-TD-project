@@ -126,18 +126,6 @@ public class Utils {
 
         return color;
     }
-
-    public static void doNothing() {
-        String nothing = "";
-    }
-
-        public static Vector2 mousePosToWorldPos(){
-//        Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-//        camera.unproject(mousePos);
-//        Vector2 worldMousePos = new Vector2(mousePos.x, mousePos.y);
-//        return worldMousePos;
-            return null; //TODO: пока не трогать.
-    }
     public static float median(float a, float b) {
         return (a + b) / 2;
     }
@@ -147,16 +135,16 @@ public class Utils {
     }
 
     public static float getDTime(float gameSpeed) {
-        return Gdx.graphics.getDeltaTime() * gameSpeed; //data.gameSpeed; //TODO: сделать скорость игры переменной
+        return Gdx.graphics.getDeltaTime() * gameSpeed;
     }
 
     public static float getDTime() {
-        return Gdx.graphics.getDeltaTime() * 1; //data.gameSpeed; //TODO: сделать скорость игры переменной
+        return Gdx.graphics.getDeltaTime() * 1;
     }
 
 
     public static float roundFloat(float flt, int scale, RoundingMode mode) {
-        BigDecimal bd = BigDecimal.valueOf(flt);//Великое Зло возвращается!
+        BigDecimal bd = BigDecimal.valueOf(flt);
         bd = bd.setScale(scale, mode);
         return bd.floatValue();
     }
@@ -174,10 +162,4 @@ public class Utils {
         TextureRegion fragment = new TextureRegion(texture, regionX, regionY, regionWidth, regionHeight);
         return fragment.getTexture();
     }
-
-    public static int mirrorY(int y, int space) {
-        return space - y - 1;
-    }
-
-
 }

@@ -23,6 +23,14 @@ public class Planet extends Actor implements Disposable {
         scale = s;
         originPoint = new Vector2(size.x / 2f, size.y / 2f);
     }
+
+    public Planet(Texture t, Vector2 s){
+        texture = new TextureRegion(t);
+        rotation = 0;
+        size = new Vector2(t.getHeight(), t.getWidth());
+        scale = s;
+        originPoint = new Vector2(size.x / 2f, size.y / 2f);
+    }
     public void draw(Batch batch){
         batch.draw(texture, position.x - size.x / 2f, position.y - size.y / 2f, originPoint.x, originPoint.y, size.x, size.y, scale.x, scale.y, rotation);
     }
